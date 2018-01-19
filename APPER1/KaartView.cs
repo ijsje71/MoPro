@@ -66,7 +66,7 @@ namespace APPER1
             float r = 10;                                                        // Zorgt ervoor dat de pointer dezelfde grootte blijft bij het in- en uitzoomen
             r = r * this.Schaal;
             mat.PostScale(this.Schaal / r, this.Schaal / r);
-            mat.PostRotate(-this.Hoek);
+            mat.PostRotate(this.Hoek);
             mat.PostTranslate((this.Width / 2 + (uithof.X - centrum.X) / 2.5f * this.Schaal), this.Height / 2 + (centrum.Y - uithof.Y) / 2.5f * this.Schaal);
             canvas.DrawBitmap(this.loper, mat, verf);
             Paint kleur = new Paint();
