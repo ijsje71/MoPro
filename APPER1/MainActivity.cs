@@ -11,7 +11,7 @@ using Android.Runtime;
 
 namespace APPER1
 {
-    [Activity(Label = "HardloopApp", MainLauncher = true , Icon = "@drawable/icon")]
+    [Activity(Label = "HardloopApp", MainLauncher = true /*, Icon = "@drawable/icon"*/)]
     public class MainActivity : Activity , ILocationListener
     {
         TextView coordinaten;   
@@ -67,13 +67,15 @@ namespace APPER1
 
             //declaratie van de eventhandler in de MainActivity
             opschonen.Click += this.Opschonen;
-            
+
+            //Opmaak van de knoppen
             LinearLayout horizontaal = new LinearLayout(this);
             horizontaal.Orientation = Orientation.Horizontal;
             horizontaal.AddView(centreer);
             horizontaal.AddView(startstop);
             horizontaal.AddView(opschonen);
 
+            //Opmaak van het scherm
             LinearLayout verticaal = new LinearLayout(this);
             verticaal.Orientation = Orientation.Vertical;
             verticaal.AddView(horizontaal);
@@ -97,10 +99,10 @@ namespace APPER1
             }
         }
 
-        //eventhandler voor de opschonen knop
+        // Eventhandler voor de opschonen knop, deze neemt de dialoog in handen
         public void Opschonen(object o, EventArgs ea) {
 
-         
+            //If opdracht die checkt of de training überhaupt is begonnen
             if (utrecht.looppad.Count != 0){
                 startstop.Text = "Start";
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -110,6 +112,7 @@ namespace APPER1
                 alert.SetNegativeButton("Nee", this.Cancel);
                 alert.Create().Show();
             }
+            // Foutmelding als er nog geen looppad is om op te schonen
             else 
             {
                 AlertDialog.Builder popup = new AlertDialog.Builder(this);
@@ -123,32 +126,35 @@ namespace APPER1
        
         public void Cancel(object o, EventArgs ea)  // Eventhandler voor de nee/OK knop in de dialoog.
         {
-          
+                // Aanpassen van de Start/Stop knop met verschillende situaties
              if (utrecht.looppad.Count != 0)
             {
+                // Pad wordt gelopen en nog gevolgd. Opschonen wordt gecancelled
                 if (utrecht.volg)
                 {
                     startstop.Text = "Stop";
                     utrecht.volg = true;
                 }
+                // Pad wordt gelopen maar het volgen is gepauzeerd. Opschonen wordt gecancelled
                 else if (!utrecht.volg)
                 {
-                    startstop.Text = "start";
+                    startstop.Text = "Start";
                     utrecht.volg = false;
                 }
             }
              else
             {
+                // Wanneer er wordt opgeschoond en de foutmelding wordt weergeven
                 if (utrecht.looppad.Count == 0)
                 {
                     startstop.Text = "Start";
                     utrecht.volg = false;
                 }
-                else
+                /*else
                 {
                     startstop.Text = "Stop";
                     utrecht.volg = false;
-                }
+                } */
             }
        
        

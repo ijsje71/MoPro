@@ -26,21 +26,24 @@ namespace APPER1
 
         public KaartView(Context c) : base(c)
         {
-            this.SetBackgroundColor(Color.Black);
-            BitmapFactory.Options opt = new BitmapFactory.Options();
+
+            this.SetBackgroundColor(Color.Black);                       //zet de achtergrondkleur van de view op zwart
+            BitmapFactory.Options opt = new BitmapFactory.Options();    //declaratie van de bitmap options voor instellingen over het zoomen en draggen
             opt.InScaled = false;                                       // Zorgt ervoor dat de kaart oningezoomd wordt getoond.
             utrecht = BitmapFactory.DecodeResource(this.Resources, Resource.Drawable.kaart, opt);   // Tekent de kaart
             loper = BitmapFactory.DecodeResource(c.Resources, Resource.Drawable.point, opt);    // tekent de loper
 
-            SensorManager sm = (SensorManager)c.GetSystemService(Context.SensorService);             
-            sm.RegisterListener(this, sm.GetDefaultSensor(SensorType.Orientation), SensorDelay.Ui);
+            SensorManager sm = (SensorManager)c.GetSystemService(Context.SensorService);             // sensormanager voor de
+            sm.RegisterListener(this, sm.GetDefaultSensor(SensorType.Orientation), SensorDelay.Ui);  // locatie
 
+            //declaraties voor de locatie
             LocationManager lm = (LocationManager)c.GetSystemService(Context.LocationService);
             Criteria crit = new Criteria();
             crit.Accuracy = Accuracy.Fine;
             string lp = lm.GetBestProvider(crit, true);
             if (lp != null)
                 lm.RequestLocationUpdates(lp, 0, 0, this);
+            //eventhandler voor wanneer de kaart wordt aangeraakt
             this.Touch += RaakAaan;
         }
       
@@ -55,22 +58,26 @@ namespace APPER1
             float middenX = (centrum.X - 136000) / 2.5f;
             float middenY = (458000 - centrum.Y) / 2.5f;
 
+
+            //matrix voor de kaart
             Matrix mat = new Matrix();                    
             mat.PostTranslate(-middenX, -middenY);             // Zorgt ervoor dat de kaart op de goede plek wordt getekend
             mat.PostScale(this.Schaal, this.Schaal);
             mat.PostTranslate(this.Width / 2, this.Height / 2);
-            canvas.DrawBitmap(utrecht, mat, verf);
+            canvas.DrawBitmap(utrecht, mat, verf);              //tekent de kaart in de view
             
+            //matrix voor de loper
             mat = new Matrix();
             mat.PostTranslate((-loper.Width) / 2, (-loper.Height) / 2);        // Zorgt ervoor dat de positie op de goede plek wordt getekend
             mat.PostScale(this.Schaal / 9, this.Schaal / 9);
             mat.PostRotate(-this.Hoek);
             mat.PostTranslate((this.Width / 2 + (uithof.X - centrum.X) / 2.5f * this.Schaal), this.Height / 2 + (centrum.Y - uithof.Y) / 2.5f * this.Schaal);
-            canvas.DrawBitmap(this.loper, mat, verf);
+            canvas.DrawBitmap(this.loper, mat, verf);                       //tekent de loper in de kaart
             Paint kleur = new Paint();
             kleur.Color = Color.Red;
             float r = 10;
             r = r * this.Schaal;                                // Zorgt ervoor dat de pointer dezelfde grootte blijft bij het in- en uitzoomen
+
             foreach (Opslaan punt in looppad)
             {
                 
@@ -97,12 +104,14 @@ namespace APPER1
         {
             PointF geo = new PointF((float)location.Latitude, (float)location.Longitude);
             uithof = Projectie.Geo2RD(geo);
-            if (volg)
+            if (volg)                                       // Checkt of er getrackt moet worden
             {
                 looppad.Add(new Opslaan(uithof)); 
             }
             this.Invalidate();
         }
+
+        // Niet gebruikte methoden voor de SensorManager
         public void OnAccuracyChanged(Sensor s, SensorStatus accuracy)      
         {
         }
@@ -136,17 +145,20 @@ namespace APPER1
         float oudeSchaal;
         PointF oudeCentrum;
 
+        // Event handler die aanrakingen op de kaart regelt
         public void RaakAaan(object o, TouchEventArgs tea)
         {
+            // Slaat het punt van aanraken op in een variabele
             huidig1 = new PointF(tea.Event.GetX(0), tea.Event.GetY(0));
 
+            // Blok code wordt geëxecuteerd wanneer de vinger op het scherm wordt gelegd
             if (tea.Event.Action == MotionEventActions.Down)
             {
                 start1 = huidig1;
                 oudeCentrum = centrum;
                 oudeSchaal = Schaal;
             }
-            if (tea.Event.PointerCount == 1)   // If-statement voor het pinchen
+            if (tea.Event.PointerCount == 1)   // If-statement voor het draggen 
             {
 
 
@@ -161,17 +173,21 @@ namespace APPER1
                 }
             }
 
-            if (tea.Event.PointerCount == 2)    // If-statement voor het draggen
+            if (tea.Event.PointerCount == 2)    // If-statement voor het pinchen
             {
                 pinchen = true;
+                // Slaat het punt van de andere vinger op in een variabele
                 huidig2 = new PointF(tea.Event.GetX(1), tea.Event.GetY(1));
+
                 if (tea.Event.Action == MotionEventActions.Pointer2Down)
                 {
                     start1 = huidig1;
                     start2 = huidig2;
 
                 }
+                // Begin positie van de twee vingers
                 float oud = Afstand(start2, start1);
+                // Eindpositie van de twee vingers
                 float nieuw = Afstand(huidig2, huidig1);
                 if (oud != 0 && nieuw != 0)
                 {
@@ -205,6 +221,7 @@ namespace APPER1
           deze schoont daadwerkelijk het looppad op*/
         public void Opschonen(object o, EventArgs ea)
         {
+            //daadwerkelijke opschonen van het pad
             looppad.Clear();
             //zorgt ervoor dat de locatie niet meer gevolgd wordt
             volg = false;
