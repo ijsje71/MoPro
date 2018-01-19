@@ -23,6 +23,7 @@ namespace APPER1
         float Hoek;                                    
         PointF uithof = new PointF(142000, 459600);  // Uithof positie, uitgangspunt van de app
         PointF centrum = new PointF(139000, 455500);  // Centrum van de kaart
+        float dx, dy, ax, ay;
 
         public KaartView(Context c) : base(c)
         {
@@ -140,29 +141,31 @@ namespace APPER1
         public void RaakAaan(object o, TouchEventArgs tea)
         {
             huidig1 = new PointF(tea.Event.GetX(0), tea.Event.GetY(0));
-
+            
             if (tea.Event.Action == MotionEventActions.Down)
             {
                 start1 = huidig1;
                 oudeCentrum = centrum;
                 oudeSchaal = Schaal;
             }
-            if (tea.Event.PointerCount == 1)   // If-statement voor het pinchen
+            if (tea.Event.PointerCount == 1)   // If-statement voor het draggen
             {
-
-
+            
                 if (!pinchen)
                 {
-                    float dx = huidig1.X - start1.X;  // In scherm pixels de afstand tot midden 
-                    float dy = huidig1.Y - start1.Y;
-                    float ax = (dx / oudeSchaal) * 2.5f;  // In meters afstand tot midden
-                    float ay = (dy / oudeSchaal) * 2.5f;
+                     dx = huidig1.X - start1.X;  // In scherm pixels de afstand tot midden 
+                     dy = huidig1.Y - start1.Y;
+                     ax = (dx / oudeSchaal) * 2.5f;  // In meters afstand tot midden
+                     ay = (dy / oudeSchaal) * 2.5f;
+
                     centrum = new PointF(oudeCentrum.X - ax, oudeCentrum.Y + ay);
+                 
+                    
                     this.Invalidate();
                 }
             }
 
-            if (tea.Event.PointerCount == 2)    // If-statement voor het draggen
+            if (tea.Event.PointerCount == 2)    // If-statement voor het pinchen
             {
                 pinchen = true;
                 huidig2 = new PointF(tea.Event.GetX(1), tea.Event.GetY(1));
@@ -179,12 +182,30 @@ namespace APPER1
                     float factor = nieuw / oud;
                     Schaal = oudeSchaal * factor;
                     if (Schaal > 10) Schaal = 10;   // Limiteer schaal zodat er niet oneindig in en uitgezoomd kan worden
-                    if (Schaal < 0.1) Schaal = 0.1f;
+                    if (Schaal < 0.4) Schaal = 0.4f;
                 }
 
             }
             if (tea.Event.Action == MotionEventActions.Up)
+            {
                 pinchen = false;                  // Zorgt ervoor dat je kan draggen na het pinchen
+                if (oudeCentrum.X > 145000)
+                    oudeCentrum.X = 145000;
+                if (oudeCentrum.X < 133000)
+                    oudeCentrum.X = 133000;
+
+                if (oudeCentrum.Y > 461500)
+                    oudeCentrum.Y = 461500;
+
+                if (oudeCentrum.Y < 449500)
+                    oudeCentrum.Y = 449500;
+
+                centrum = new PointF(oudeCentrum.X - ax, oudeCentrum.Y + ay);
+
+                Console.WriteLine("JAWEL");
+                this.Invalidate();
+            }
+         
 
             this.Invalidate();
 
