@@ -63,14 +63,15 @@ namespace APPER1
             
             mat = new Matrix();
             mat.PostTranslate((-loper.Width) / 2, (-loper.Height) / 2);        // Zorgt ervoor dat de positie op de goede plek wordt getekend
-            mat.PostScale(this.Schaal / 9, this.Schaal / 9);
+            float r = 10;                                                        // Zorgt ervoor dat de pointer dezelfde grootte blijft bij het in- en uitzoomen
+            r = r * this.Schaal;
+            mat.PostScale(this.Schaal / r, this.Schaal / r);
             mat.PostRotate(-this.Hoek);
             mat.PostTranslate((this.Width / 2 + (uithof.X - centrum.X) / 2.5f * this.Schaal), this.Height / 2 + (centrum.Y - uithof.Y) / 2.5f * this.Schaal);
             canvas.DrawBitmap(this.loper, mat, verf);
             Paint kleur = new Paint();
             kleur.Color = Color.Red;
-            float r = 10;
-            r = r * this.Schaal;                                // Zorgt ervoor dat de pointer dezelfde grootte blijft bij het in- en uitzoomen
+                             // Zorgt ervoor dat de pointer dezelfde grootte blijft bij het in- en uitzoomen
             foreach (Opslaan punt in looppad)
             {
                 
@@ -83,7 +84,7 @@ namespace APPER1
                 float x = this.Width / 2 + schermx;
                 float y = this.Height / 2 + schermy;
                 mat.PostScale(this.Schaal, this.Schaal);
-                canvas.DrawCircle(x, y, r, kleur);          // Tekent het gelopen pad
+                canvas.DrawCircle(x, y, 9, kleur);          // Tekent het gelopen pad
             }
 
         }
