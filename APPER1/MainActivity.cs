@@ -37,11 +37,12 @@ namespace APPER1
             utrecht = new KaartView(this);
             KaartView kaartview = new KaartView(this);
 
-
+            // TekstView met de huidige coordinaten
             coordinaten = new TextView(this);
             coordinaten.SetBackgroundColor(Color.Black);
             coordinaten.Text = "Zoeken naar GPS...";
-            
+
+            // Centreer knop
             Button centreer = new Button(this);
             centreer.Text = "Centreer";
             centreer.SetTextColor(Color.White);
@@ -68,14 +69,23 @@ namespace APPER1
             //declaratie van de eventhandler in de MainActivity
             opschonen.Click += this.Opschonen;
 
-            //Opmaak van de knoppen
+            // Declaraties voor de Share knop
+            Button delen = new Button(this);
+            delen.Text = "Delen";
+            delen.SetTextColor(Color.White);
+
+            // Event handler voor de share knop
+            delen.Click += Delen;
+            
+            // Opmaak van de knoppen
             LinearLayout horizontaal = new LinearLayout(this);
             horizontaal.Orientation = Orientation.Horizontal;
             horizontaal.AddView(centreer);
             horizontaal.AddView(startstop);
             horizontaal.AddView(opschonen);
+            horizontaal.AddView(delen);
 
-            //Opmaak van het scherm
+            // Opmaak van het scherm
             LinearLayout verticaal = new LinearLayout(this);
             verticaal.Orientation = Orientation.Vertical;
             verticaal.AddView(horizontaal);
@@ -86,12 +96,13 @@ namespace APPER1
         }
         public void StartStop(object o, EventArgs ea)  // EventHandler voor de Start/Stop knop
         {
-           
+           // If-statement als de knop nog niet is ingedrukt
             if (!utrecht.volg)
             {
                 startstop.Text = "Stop";
                 utrecht.trainingGestart = true;
             }
+            // If-statement als de knop al eerder in is gedrukt
             else if (utrecht.volg)
             {
                 startstop.Text = "Start";
@@ -109,6 +120,7 @@ namespace APPER1
                 alert.SetTitle("Weet je het zeker?");
                 alert.SetMessage("Weet je zeker dat je jouw training wilt opschonen?");
                 alert.SetPositiveButton("Ja", utrecht.Opschonen);
+                // Verwijzing naar de Cancel methode
                 alert.SetNegativeButton("Nee", this.Cancel);
                 alert.Create().Show();
             }
@@ -118,8 +130,30 @@ namespace APPER1
                 AlertDialog.Builder popup = new AlertDialog.Builder(this);
                 popup.SetTitle("Training nog niet gestart");
                 popup.SetMessage("Er is een fout opgetreden. De training kan niet worden opgeschoond, als de training nog niet is gestart!");
+                // Verwijzing naar de Cancel methode
                 popup.SetPositiveButton("OK", this.Cancel);
                 popup.Create().Show();
+            }
+        }
+
+        public void Delen(object o, EventArgs ea)
+        {
+            // If-statement die checkt of de training al is gestart voordat de track gedeeld
+            if (!utrecht.trainingGestart)
+            {
+                AlertDialog.Builder deelPopup = new AlertDialog.Builder(this);
+                deelPopup.SetTitle("Training nog niet gestart");
+                deelPopup.SetMessage("Er is een fout opgetreden. De training kan niet worden gedeeld, als de training nog niet is gestart!");
+                // Verwijzing naar de Cancel methode
+                deelPopup.SetPositiveButton("OK", this.Cancel);
+                deelPopup.Create().Show();
+            } else { 
+
+            string bericht = utrecht.Bericht(utrecht.looppad);
+            Intent i = new Intent(Intent.ActionSend);
+            i.SetType("text/plain");
+            i.PutExtra(Intent.ExtraText, bericht);
+            this.StartActivity(i);
             }
         }
 
