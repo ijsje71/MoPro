@@ -26,7 +26,7 @@ namespace APPER1
         PointF uithof = new PointF(140500, 455000);  // Uithof positie, uitgangspunt van de app
         PointF centrum = new PointF(139000, 455500);  // Centrum van de kaart
         float dx, dy, ax, ay;
-        public int aantal;
+        Array tijden = 
 
         public KaartView(Context c) : base(c)
         {
@@ -118,7 +118,7 @@ namespace APPER1
             {
                 // Huidige punt toevoegen aan de klasse
                 looppad.Add(new Opslaan(uithof));
-                aantal++;
+                
             }
             this.Invalidate();
         }
@@ -297,11 +297,10 @@ namespace APPER1
         }
         public string Bericht(List<Opslaan> looppad)
         {
-            int p;
             string stringLooppad = "";
             foreach (Opslaan punt in looppad)
             {
-                stringLooppad += $"{punt.x} + {punt.y} \n";
+                stringLooppad += $"{punt.x} {punt.y} \n";
             }
 
             return stringLooppad;
