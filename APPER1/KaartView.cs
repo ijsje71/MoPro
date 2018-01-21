@@ -26,7 +26,7 @@ namespace APPER1
         PointF uithof = new PointF(140500, 455000);  // Uithof positie, uitgangspunt van de app
         PointF centrum = new PointF(139000, 455500);  // Centrum van de kaart
         float dx, dy, ax, ay;
-        Array tijden = 
+        //Array tijden = 
 
         public KaartView(Context c) : base(c)
         {
@@ -266,7 +266,7 @@ namespace APPER1
             // List wordt opgeschoond
             looppad.Clear();
             // Zet het aantal voor de for loop weer op 0
-            aantal = 0;
+            //aantal = 0;
             //zorgt ervoor dat de locatie niet meer gevolgd wordt
             volg = false;
             //zorgt ervoor dat de correcte dialoog laten zien wanneer de opschonen knop is ingedrukt
@@ -286,7 +286,7 @@ namespace APPER1
                 x = p.X;
                 y = p.Y;
             }
-
+            
             public Opslaan(float x, float y)
             {
                 this.x = x;

@@ -139,7 +139,7 @@ namespace APPER1
         public void Delen(object o, EventArgs ea)
         {
             // If-statement die checkt of de training al is gestart voordat de track gedeeld
-            if (!utrecht.trainingGestart)
+            if (utrecht.looppad.Count == 0)
             {
                 AlertDialog.Builder deelPopup = new AlertDialog.Builder(this);
                 deelPopup.SetTitle("Training nog niet gestart");
