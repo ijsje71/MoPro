@@ -74,6 +74,19 @@ namespace APPER1
             delen.Text = "Delen";
             delen.SetTextColor(Color.White);
 
+            // Declaraties voor de 'opslag' knop
+            Button opslaan = new Button(this);
+            opslaan.Text = "Save";
+            opslaan.SetTextColor(Color.White);
+          
+
+            // Declaraties voor de 'opslag' knop
+            Button laden = new Button(this);
+            laden.Text = "Load";
+            laden.SetTextColor(Color.White);
+            laden.Click += this.Opslag;
+
+
             // Event handler voor de share knop
             delen.Click += Delen;
             
@@ -85,10 +98,16 @@ namespace APPER1
             horizontaal.AddView(opschonen);
             horizontaal.AddView(delen);
 
+            LinearLayout horizontaal2 = new LinearLayout(this);
+            horizontaal2.Orientation = Orientation.Horizontal;
+            horizontaal2.AddView(opslaan);
+            horizontaal2.AddView(laden);
+
             // Opmaak van het scherm
             LinearLayout verticaal = new LinearLayout(this);
             verticaal.Orientation = Orientation.Vertical;
             verticaal.AddView(horizontaal);
+            verticaal.AddView(horizontaal2);
             verticaal.AddView(coordinaten);
             verticaal.AddView(utrecht);
 
@@ -157,7 +176,12 @@ namespace APPER1
             }
         }
 
-       
+        public void Opslag(object o, EventArgs ea)
+        {
+            StartActivity(typeof(OpslagActivity));
+        }
+
+
         public void Cancel(object o, EventArgs ea)  // Eventhandler voor de nee/OK knop in de dialoog.
         {
                 // Aanpassen van de Start/Stop knop met verschillende situaties
