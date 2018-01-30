@@ -16,7 +16,7 @@ namespace APPER1
     public class KaartView : View , ISensorEventListener , ILocationListener
     {
 
-        public bool trainingGestart = false;  //public boolean die bijhoudt of de training gestart is of niet
+        public bool trainingGestart;  //public boolean die bijhoudt of de training gestart is of niet
         Bitmap utrecht, loper;        // declaratie van de bitmaps van de kaart en het icoontje.
         float Schaal;
         public double noord, oost;
@@ -134,7 +134,7 @@ new DateTime(   2018,1,30,  10,02,17    ),
 new DateTime(   2018,1,30,  10,02,18    ),
 new DateTime(   2018,1,30,  10,02,19    ),
 new DateTime(   2018,1,30,  10,02,20    ),
-new DateTime(   2018,1,30,  10,02,21    ) };
+new DateTime(   2018,1,30,  10,02,21    )};
         PointF[] nepPunten = { new PointF(  (float)52.08705, (float)5.168281  ),
 new PointF((float)52.08705, (float)5.168281),
 new PointF((float)52.08702, (float)5.168191),
@@ -287,7 +287,8 @@ new PointF((float)52.08627, (float)5.168832)};
                 lm.RequestLocationUpdates(lp, 0, 0, this);
             // Event handler voor wanneer de kaart wordt aangeraakt
             this.Touch += RaakAaan;
-            
+
+
         }
       
         protected override void OnDraw(Canvas canvas)
@@ -377,7 +378,7 @@ new PointF((float)52.08627, (float)5.168832)};
                 drawX = uithof.X;
                 drawY = uithof.Y;
                 if (volg)
-                looppad.Add(new Opslaan(uithof));
+                looppad.Add(new Opslaan(uithof.X, uithof.Y, DateTime.Now));
             }
             // Huidige locatie in RD coordinaten
             if (volg && (Math.Abs(uithof.X - drawX) > 10 || Math.Abs(uithof.Y - drawY) > 10))
@@ -385,7 +386,7 @@ new PointF((float)52.08627, (float)5.168832)};
                 // Huidige punt toevoegen aan de klasse
                 drawX = uithof.X;
                 drawY = uithof.Y;
-                looppad.Add(new Opslaan(uithof));
+                looppad.Add(new Opslaan(uithof.X, uithof.Y, DateTime.Now));
             }
             this.Invalidate();
         }
@@ -534,8 +535,6 @@ new PointF((float)52.08627, (float)5.168832)};
         {
             // List wordt opgeschoond
             looppad.Clear();
-            // Zet het aantal voor de for loop weer op 0
-            //aantal = 0;
             //zorgt ervoor dat de locatie niet meer gevolgd wordt
             volg = false;
             //zorgt ervoor dat de correcte dialoog laten zien wanneer de opschonen knop is ingedrukt
@@ -556,8 +555,7 @@ new PointF((float)52.08627, (float)5.168832)};
                 // Zet de x en de y in 1 punt
                 x = p.X;
                 y = p.Y;
-                if (trainingGestart)
-                tijd = DateTime.Now;
+                
             }   
             
             public Opslaan(float x, float y, DateTime tijd)

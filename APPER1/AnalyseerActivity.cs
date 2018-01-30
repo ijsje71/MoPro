@@ -41,7 +41,10 @@ namespace APPER1
             TimeSpan laatsteTijd = TimeSpan.Parse(splitTrack[lastIndex]);
             TimeSpan tijdsduurSom = laatsteTijd - eersteTijd;
 
+
+
             tijdsduur.Text = tijdsduurSom.ToString();
+
 
             //int j = -1;
             //for (int i = 0; i < (splitTrack.Length / 4); i++) {
