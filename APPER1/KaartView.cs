@@ -26,7 +26,7 @@ namespace APPER1
         PointF uithof = new PointF(140500, 455000);  // Uithof positie, uitgangspunt van de app
         PointF centrum = new PointF(139000, 455500);  // Centrum van de kaart
         float dx, dy, ax, ay;
-        //Array tijden = 
+        List<DateTime> tijdstippen = new List<DateTime>();
 
         public KaartView(Context c) : base(c)
         {
@@ -114,11 +114,12 @@ namespace APPER1
             PointF geo = new PointF((float)location.Latitude, (float)location.Longitude);
             // Huidige locatie in RD coordinaten
             uithof = Projectie.Geo2RD(geo);
+            huidigTijdstip = DateTime.Now;
             if (volg)
             {
                 // Huidige punt toevoegen aan de klasse
                 looppad.Add(new Opslaan(uithof));
-                
+                tijdstippen.Add(huidigTijdstip); //zet tijdstip van het gelopen punt
             }
             this.Invalidate();
         }
@@ -158,6 +159,7 @@ namespace APPER1
         PointF huidig2;
         float oudeSchaal;
         PointF oudeCentrum;
+        DateTime huidigTijdstip;
 
         public void RaakAaan(object o, TouchEventArgs tea)
         {
@@ -278,20 +280,21 @@ namespace APPER1
         {
             public float x;
             public float y;
-            
+            public DateTime tijd;
 
             public Opslaan(PointF p)
             {
                 // Zet de x en de y in 1 punt
                 x = p.X;
                 y = p.Y;
+                tijd = DateTime.Now;
             }
             
-            public Opslaan(float x, float y)
+            public Opslaan(float x, float y, DateTime tijd)
             {
                 this.x = x;
                 this.y = y;
-                
+                this.tijd = tijd;
             }
 
         }
@@ -300,7 +303,10 @@ namespace APPER1
             string stringLooppad = "";
             foreach (Opslaan punt in looppad)
             {
-                stringLooppad += $"{punt.x} {punt.y} \n";
+                PointF convertPunt = new PointF(punt.x, punt.y);
+                PointF geoPunt = Projectie.RD2Geo(convertPunt);
+                stringLooppad += $"{geoPunt.X} {geoPunt.Y} {punt.tijd}\n";
+
             }
 
             return stringLooppad;
