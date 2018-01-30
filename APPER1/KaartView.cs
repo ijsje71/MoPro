@@ -16,13 +16,125 @@ namespace APPER1
     public class KaartView : View , ISensorEventListener , ILocationListener
     {
 
-        public bool trainingGestart;  //public boolean die bijhoudt of de training gestart is of niet
+        public bool trainingGestart = false;  //public boolean die bijhoudt of de training gestart is of niet
         Bitmap utrecht, loper;        // declaratie van de bitmaps van de kaart en het icoontje.
         float Schaal;
         public double noord, oost;
         public bool volg = false;  //boolean om aan te duiden of de locatie gevolgd en getekend moet worden
         public List<Opslaan> looppad = new List<Opslaan>();   //lijst van alle punten waar de gebruiker geweest is
-        public List<PointF> nepLooppad = new List<PointF>();   //lijst voor de nep track
+        public List<Opslaan> nepLooppad = new List<Opslaan>();   //lijst voor de nep track
+        DateTime[] nepTijden = {new DateTime(   2018,1,30,  10,00,30  ),
+new DateTime(   2018,1,30,  10,00,31    ),
+new DateTime(   2018,1,30,  10,00,32    ),
+new DateTime(   2018,1,30,  10,00,33    ),
+new DateTime(   2018,1,30,  10,00,34    ),
+new DateTime(   2018,1,30,  10,00,35    ),
+new DateTime(   2018,1,30,  10,00,36    ),
+new DateTime(   2018,1,30,  10,00,37    ),
+new DateTime(   2018,1,30,  10,00,38    ),
+new DateTime(   2018,1,30,  10,00,39    ),
+new DateTime(   2018,1,30,  10,00,40    ),
+new DateTime(   2018,1,30,  10,00,41    ),
+new DateTime(   2018,1,30,  10,00,42    ),
+new DateTime(   2018,1,30,  10,00,43    ),
+new DateTime(   2018,1,30,  10,00,44    ),
+new DateTime(   2018,1,30,  10,00,45    ),
+new DateTime(   2018,1,30,  10,00,46    ),
+new DateTime(   2018,1,30,  10,00,47    ),
+new DateTime(   2018,1,30,  10,00,48    ),
+new DateTime(   2018,1,30,  10,00,49    ),
+new DateTime(   2018,1,30,  10,00,50    ),
+new DateTime(   2018,1,30,  10,00,51    ),
+new DateTime(   2018,1,30,  10,00,52    ),
+new DateTime(   2018,1,30,  10,00,53    ),
+new DateTime(   2018,1,30,  10,00,54    ),
+new DateTime(   2018,1,30,  10,00,55    ),
+new DateTime(   2018,1,30,  10,00,56    ),
+new DateTime(   2018,1,30,  10,00,57    ),
+new DateTime(   2018,1,30,  10,00,58    ),
+new DateTime(   2018,1,30,  10,00,59    ),
+new DateTime(   2018,1,30,  10,01,00    ),
+new DateTime(   2018,1,30,  10,01,01    ),
+new DateTime(   2018,1,30,  10,01,02    ),
+new DateTime(   2018,1,30,  10,01,03    ),
+new DateTime(   2018,1,30,  10,01,04    ),
+new DateTime(   2018,1,30,  10,01,05    ),
+new DateTime(   2018,1,30,  10,01,06    ),
+new DateTime(   2018,1,30,  10,01,07    ),
+new DateTime(   2018,1,30,  10,01,08    ),
+new DateTime(   2018,1,30,  10,01,09    ),
+new DateTime(   2018,1,30,  10,01,10    ),
+new DateTime(   2018,1,30,  10,01,11    ),
+new DateTime(   2018,1,30,  10,01,12    ),
+new DateTime(   2018,1,30,  10,01,13    ),
+new DateTime(   2018,1,30,  10,01,14    ),
+new DateTime(   2018,1,30,  10,01,15    ),
+new DateTime(   2018,1,30,  10,01,16    ),
+new DateTime(   2018,1,30,  10,01,17    ),
+new DateTime(   2018,1,30,  10,01,18    ),
+new DateTime(   2018,1,30,  10,01,19    ),
+new DateTime(   2018,1,30,  10,01,20    ),
+new DateTime(   2018,1,30,  10,01,21    ),
+new DateTime(   2018,1,30,  10,01,22    ),
+new DateTime(   2018,1,30,  10,01,23    ),
+new DateTime(   2018,1,30,  10,01,24    ),
+new DateTime(   2018,1,30,  10,01,25    ),
+new DateTime(   2018,1,30,  10,01,26    ),
+new DateTime(   2018,1,30,  10,01,27    ),
+new DateTime(   2018,1,30,  10,01,28    ),
+new DateTime(   2018,1,30,  10,01,29    ),
+new DateTime(   2018,1,30,  10,01,30    ),
+new DateTime(   2018,1,30,  10,01,31    ),
+new DateTime(   2018,1,30,  10,01,32    ),
+new DateTime(   2018,1,30,  10,01,33    ),
+new DateTime(   2018,1,30,  10,01,34    ),
+new DateTime(   2018,1,30,  10,01,35    ),
+new DateTime(   2018,1,30,  10,01,36    ),
+new DateTime(   2018,1,30,  10,01,37    ),
+new DateTime(   2018,1,30,  10,01,38    ),
+new DateTime(   2018,1,30,  10,01,39    ),
+new DateTime(   2018,1,30,  10,01,40    ),
+new DateTime(   2018,1,30,  10,01,41    ),
+new DateTime(   2018,1,30,  10,01,42    ),
+new DateTime(   2018,1,30,  10,01,43    ),
+new DateTime(   2018,1,30,  10,01,44    ),
+new DateTime(   2018,1,30,  10,01,45    ),
+new DateTime(   2018,1,30,  10,01,46    ),
+new DateTime(   2018,1,30,  10,01,47    ),
+new DateTime(   2018,1,30,  10,01,48    ),
+new DateTime(   2018,1,30,  10,01,49    ),
+new DateTime(   2018,1,30,  10,01,50    ),
+new DateTime(   2018,1,30,  10,01,51    ),
+new DateTime(   2018,1,30,  10,01,52    ),
+new DateTime(   2018,1,30,  10,01,53    ),
+new DateTime(   2018,1,30,  10,01,54    ),
+new DateTime(   2018,1,30,  10,01,55    ),
+new DateTime(   2018,1,30,  10,01,56    ),
+new DateTime(   2018,1,30,  10,01,57    ),
+new DateTime(   2018,1,30,  10,01,58    ),
+new DateTime(   2018,1,30,  10,01,59    ),
+new DateTime(   2018,1,30,  10,02,00    ),
+new DateTime(   2018,1,30,  10,02,01    ),
+new DateTime(   2018,1,30,  10,02,02    ),
+new DateTime(   2018,1,30,  10,02,03    ),
+new DateTime(   2018,1,30,  10,02,04    ),
+new DateTime(   2018,1,30,  10,02,05    ),
+new DateTime(   2018,1,30,  10,02,06    ),
+new DateTime(   2018,1,30,  10,02,07    ),
+new DateTime(   2018,1,30,  10,02,08    ),
+new DateTime(   2018,1,30,  10,02,09    ),
+new DateTime(   2018,1,30,  10,02,10    ),
+new DateTime(   2018,1,30,  10,02,11    ),
+new DateTime(   2018,1,30,  10,02,12    ),
+new DateTime(   2018,1,30,  10,02,13    ),
+new DateTime(   2018,1,30,  10,02,14    ),
+new DateTime(   2018,1,30,  10,02,15    ),
+new DateTime(   2018,1,30,  10,02,16    ),
+new DateTime(   2018,1,30,  10,02,17    ),
+new DateTime(   2018,1,30,  10,02,18    ),
+new DateTime(   2018,1,30,  10,02,19    ),
+new DateTime(   2018,1,30,  10,02,20    ),
+new DateTime(   2018,1,30,  10,02,21    ) };
         PointF[] nepPunten = { new PointF(  (float)52.08705, (float)5.168281  ),
 new PointF((float)52.08705, (float)5.168281),
 new PointF((float)52.08702, (float)5.168191),
@@ -140,7 +252,7 @@ new PointF((float)52.08627, (float)5.168832)};
         PointF centrum = new PointF(139000, 455500);  // Centrum van de kaart
         float dx, dy, ax, ay;
         List<DateTime> tijdstippen = new List<DateTime>();
-        int i;
+        int i = 0;
         float drawX;
         float drawY;
 
@@ -148,7 +260,12 @@ new PointF((float)52.08627, (float)5.168832)};
 
         public KaartView(Context c) : base(c)
         {
-            
+            foreach (PointF punt in nepPunten)
+            {
+                PointF rdPoint = Projectie.Geo2RD(punt);
+                nepLooppad.Add(new Opslaan(rdPoint.X, rdPoint.Y, nepTijden[i]));
+                i++;
+            }
 
             this.SetBackgroundColor(Color.Black);
             // Declareert de bitmap options aan een variabele
@@ -209,9 +326,6 @@ new PointF((float)52.08627, (float)5.168832)};
             mat.PostTranslate((this.Width / 2 + (uithof.X - centrum.X) / 2.5f * this.Schaal), this.Height / 2 + (centrum.Y - uithof.Y) / 2.5f * this.Schaal);
             // Tekenen van de loper met de eigen schalen
             canvas.DrawBitmap(this.loper, mat, verf);
-            
-
-            
 
             // Loop die alle punten in de klasse af gaat
             foreach (Opslaan punt in looppad)
@@ -229,11 +343,11 @@ new PointF((float)52.08627, (float)5.168832)};
                 canvas.DrawCircle(x, y, 9, kleur);          // Tekent het gelopen pad
             }
 
-            foreach (PointF punt in nepPunten)
+            foreach (Opslaan punt in nepLooppad)
             {
 
-                float bitmapx = (punt.X - centrum.X) / 2.5f;  // nep punten omzetten in schermrelatieve pixels
-                float bitmapy = (centrum.Y - punt.Y) / 2.5f;
+                float bitmapx = (punt.x - centrum.X) / 2.5f;  // nep punten omzetten in schermrelatieve pixels
+                float bitmapy = (centrum.Y - punt.y) / 2.5f;
 
                 float schermx = bitmapx * this.Schaal;        // Omzetten naar de gebruikte schaal
                 float schermy = bitmapy * this.Schaal;
@@ -257,26 +371,21 @@ new PointF((float)52.08627, (float)5.168832)};
         public void OnLocationChanged(Location location)     // Methode die ervoor zorgt dat er elke keer een nieuw punt wordt geregistreerd als de locatie is gewijzigd
         {
             PointF geo = new PointF((float)location.Latitude, (float)location.Longitude);
-            
-            if (looppad.Count == 0) {
-                PointF convert = Projectie.Geo2RD(geo);
-                drawX = convert.X;
-                drawY = convert.Y;
-                if (volg)
-                looppad.Add(new Opslaan(convert));
+            uithof = Projectie.Geo2RD(geo);
 
-                
+            if (looppad.Count == 0) {
+                drawX = uithof.X;
+                drawY = uithof.Y;
+                if (volg)
+                looppad.Add(new Opslaan(uithof));
             }
             // Huidige locatie in RD coordinaten
-            uithof = Projectie.Geo2RD(geo);
-            huidigTijdstip = DateTime.Now;
-            if (volg && (Math.Abs(uithof.X - drawX) > 5 || Math.Abs(uithof.Y - drawY) > 5))
+            if (volg && (Math.Abs(uithof.X - drawX) > 10 || Math.Abs(uithof.Y - drawY) > 10))
             {
                 // Huidige punt toevoegen aan de klasse
                 drawX = uithof.X;
                 drawY = uithof.Y;
                 looppad.Add(new Opslaan(uithof));
-                tijdstippen.Add(huidigTijdstip); //zet tijdstip van het gelopen punt
             }
             this.Invalidate();
         }
@@ -316,7 +425,6 @@ new PointF((float)52.08627, (float)5.168832)};
         PointF huidig2;
         float oudeSchaal;
         PointF oudeCentrum;
-        DateTime huidigTijdstip;
 
         public void RaakAaan(object o, TouchEventArgs tea)
         {
@@ -399,7 +507,7 @@ new PointF((float)52.08627, (float)5.168832)};
                 this.Invalidate();
             }
          
-            // Zorgt ervoor dat de kaart meeschaalt terwijl het pinchen
+            // Zorgt ervoor dat de kaart meeschaalt tijdens het pinchen
             this.Invalidate();
 
         }
@@ -415,6 +523,8 @@ new PointF((float)52.08627, (float)5.168832)};
         {
             // Zet de boolean op de tegenovergestelde waarde
             volg = !volg;
+            if (volg)
+                nepLooppad.Clear();
             this.Invalidate();
         }
 
@@ -446,8 +556,9 @@ new PointF((float)52.08627, (float)5.168832)};
                 // Zet de x en de y in 1 punt
                 x = p.X;
                 y = p.Y;
+                if (trainingGestart)
                 tijd = DateTime.Now;
-            }
+            }   
             
             public Opslaan(float x, float y, DateTime tijd)
             {
