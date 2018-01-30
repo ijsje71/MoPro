@@ -74,6 +74,8 @@ namespace APPER1
             delen.Text = "Delen";
             delen.SetTextColor(Color.White);
 
+            // Initialisatie van de fake track
+            
             // Event handler voor de share knop
             delen.Click += Delen;
             
@@ -101,6 +103,7 @@ namespace APPER1
             {
                 startstop.Text = "Stop";
                 utrecht.trainingGestart = true;
+                utrecht.nepLooppad.Clear();
             }
             // If-statement als de knop al eerder in is gedrukt
             else if (utrecht.volg)
