@@ -265,17 +265,11 @@ new PointF((float)52.08627, (float)5.168832)};
                 if (volg)
                 looppad.Add(new Opslaan(convert));
 
-                Console.WriteLine("drawX + drawY " + drawX + " " + drawY);
+                
             }
-            Console.WriteLine("drawX: " + drawX);
             // Huidige locatie in RD coordinaten
             uithof = Projectie.Geo2RD(geo);
             huidigTijdstip = DateTime.Now;
-            Console.WriteLine($"x: {uithof.X} + drawX: {drawX} + uithofX - drawX = {uithof.X - drawX}");
-            Console.WriteLine("totale if statement: " + (volg && (Math.Abs(uithof.X - drawX) > 5 || Math.Abs(uithof.Y - drawY) > 5)));
-            Console.WriteLine("drawX deel: " + (Math.Abs(uithof.X - drawX) > 5));
-            Console.WriteLine("drawY deel: " + (Math.Abs(uithof.Y - drawY) > 5));
-            Console.WriteLine("or statement deel: " + (Math.Abs(uithof.X - drawX) > 5 || Math.Abs(uithof.Y - drawY) > 5));
             if (volg && (Math.Abs(uithof.X - drawX) > 5 || Math.Abs(uithof.Y - drawY) > 5))
             {
                 // Huidige punt toevoegen aan de klasse
