@@ -12,12 +12,16 @@ using Android.Runtime;
 namespace APPER1
 {
     [Activity(Label = "HardloopApp", MainLauncher = true /*, Icon = "@drawable/icon"*/)]
-    public class MainActivity : Activity , ILocationListener
+    public class MainActivity : Activity, ILocationListener
     {
-        TextView coordinaten;   
+        TextView coordinaten;
         KaartView utrecht;
         Button startstop;
-        
+        OpslagActivity opslag;
+        Toevoegen toevoeg;
+        string bericht;
+
+
         protected override void OnResume()
         {
             base.OnResume();
@@ -32,6 +36,8 @@ namespace APPER1
         protected override void OnCreate(Bundle b)
         {
             base.OnCreate(b);
+            opslag = new OpslagActivity();
+            toevoeg = new Toevoegen();
 
             //verwijzing naar klasse KaartView
             utrecht = new KaartView(this);
@@ -74,22 +80,18 @@ namespace APPER1
             delen.Text = "Delen";
             delen.SetTextColor(Color.White);
 
-            // Declaraties voor de 'opslag' knop
-            Button opslaan = new Button(this);
-            opslaan.Text = "Save";
-            opslaan.SetTextColor(Color.White);
-          
+           
 
             // Declaraties voor de 'opslag' knop
             Button laden = new Button(this);
-            laden.Text = "Load";
+            laden.Text = "Load/Save";
             laden.SetTextColor(Color.White);
             laden.Click += this.Opslag;
 
 
             // Event handler voor de share knop
             delen.Click += Delen;
-            
+
             // Opmaak van de knoppen
             LinearLayout horizontaal = new LinearLayout(this);
             horizontaal.Orientation = Orientation.Horizontal;
@@ -100,7 +102,7 @@ namespace APPER1
 
             LinearLayout horizontaal2 = new LinearLayout(this);
             horizontaal2.Orientation = Orientation.Horizontal;
-            horizontaal2.AddView(opslaan);
+           
             horizontaal2.AddView(laden);
 
             // Opmaak van het scherm
@@ -115,7 +117,7 @@ namespace APPER1
         }
         public void StartStop(object o, EventArgs ea)  // EventHandler voor de Start/Stop knop
         {
-           // If-statement als de knop nog niet is ingedrukt
+            // If-statement als de knop nog niet is ingedrukt
             if (!utrecht.volg)
             {
                 startstop.Text = "Stop";
@@ -130,10 +132,12 @@ namespace APPER1
         }
 
         // Eventhandler voor de opschonen knop, deze neemt de dialoog in handen
-        public void Opschonen(object o, EventArgs ea) {
+        public void Opschonen(object o, EventArgs ea)
+        {
 
             //If opdracht die checkt of de training überhaupt is begonnen
-            if (utrecht.looppad.Count != 0){
+            if (utrecht.looppad.Count != 0)
+            {
                 startstop.Text = "Start";
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                 alert.SetTitle("Weet je het zeker?");
@@ -144,7 +148,7 @@ namespace APPER1
                 alert.Create().Show();
             }
             // Foutmelding als er nog geen looppad is om op te schonen
-            else 
+            else
             {
                 AlertDialog.Builder popup = new AlertDialog.Builder(this);
                 popup.SetTitle("Training nog niet gestart");
@@ -159,7 +163,7 @@ namespace APPER1
         {
             // If-statement die checkt of de training al is gestart voordat de track gedeeld
             //if (utrecht.looppad.Count == 0)
-          if  (utrecht.stringLooppad == null)
+            if (utrecht.stringLooppad == null)
             {
                 AlertDialog.Builder deelPopup = new AlertDialog.Builder(this);
                 deelPopup.SetTitle("Training nog niet gestart");
@@ -167,30 +171,41 @@ namespace APPER1
                 // Verwijzing naar de Cancel methode
                 deelPopup.SetPositiveButton("OK", this.Cancel);
                 deelPopup.Create().Show();
-            } else { 
+            }
+            else
+            { 
 
-            string bericht = utrecht.Bericht(utrecht.looppad);
-            Intent i = new Intent(Intent.ActionSend);
-            i.SetType("text/plain");
-            i.PutExtra(Intent.ExtraText, bericht);
-            this.StartActivity(i);
+                bericht = utrecht.Bericht(utrecht.looppad);
+               // string bericht = utrecht.stringLooppad;
+                Intent i = new Intent(Intent.ActionSend);
+                i.SetType("text/plain");
+                i.PutExtra(Intent.ExtraText, bericht);
+                this.StartActivity(i);
+                //toevoeg.naamVeld.Text = bericht;
             }
         }
 
         public void Opslag(object o, EventArgs ea)
         {
-            StartActivity(typeof(OpslagActivity));
+            //StartActivity(typeof(OpslagActivity));
 
+           // Intent i = new Intent(this, typeof(OpslagActivity));
+            // i.PutExtra("startwaarde", stand);
+           // this.StartActivity(i);            string bericht = utrecht.Bericht(utrecht.looppad);
             Intent i = new Intent(this, typeof(OpslagActivity));
-           // i.PutExtra("startwaarde", stand);
-            this.StartActivity(i);
+            i.SetType("text/plain");
+            i.PutExtra("track2", bericht);
+            Console.WriteLine("HEYHALLO DIT IS DE MAINACTIVITY OVER" + bericht);
+            this.StartActivity(i);
+            this.StartActivityForResult(i, 1000000);
         }
 
+       
 
-        public void Cancel(object o, EventArgs ea)  // Eventhandler voor de nee/OK knop in de dialoog.
+            public void Cancel(object o, EventArgs ea)  // Eventhandler voor de nee/OK knop in de dialoog.
         {
-                // Aanpassen van de Start/Stop knop met verschillende situaties
-             if (utrecht.looppad.Count != 0)
+            // Aanpassen van de Start/Stop knop met verschillende situaties
+            if (utrecht.looppad.Count != 0)
             {
                 // Pad wordt gelopen en nog gevolgd. Opschonen wordt gecancelled
                 if (utrecht.volg)
@@ -205,7 +220,7 @@ namespace APPER1
                     utrecht.volg = false;
                 }
             }
-             else
+            else
             {
                 // Wanneer er wordt opgeschoond en de foutmelding wordt weergeven
                 if (utrecht.looppad.Count == 0)
@@ -219,8 +234,8 @@ namespace APPER1
                     utrecht.volg = false;
                 } */
             }
-       
-       
+
+
         }
         public void OnLocationChanged(Location location)       // Zorgt ervoor dat de coordinaten goed worden opgeslagen en weergegeven voor de gebruiker
         {
@@ -233,17 +248,17 @@ namespace APPER1
         // Benodigde methoden die verplicht aangeroepen moeten worden
         public void OnProviderDisabled(string provider)
         {
-          
+
         }
 
         public void OnProviderEnabled(string provider)
         {
-           
+
         }
 
         public void OnStatusChanged(string provider, [GeneratedEnum] Availability status, Bundle extras)
         {
-           
+
         }
     }
 }

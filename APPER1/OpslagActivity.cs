@@ -1,74 +1,162 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;           // vanwege EventArgs
+using System.Collections.Generic; // vanwege List
+using Android.App;      // vanwege Activity
+using Android.Content;  // vanwege Intent
+using Android.Widget;   // vanwege ListView, ArrayAdapter, ChoiceMode, Button enz.
+using Android.OS;       // vanwege Bundle
+using Android.Graphics; // vanwege Color;
+using System.IO;        // vanwege File
 
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Android.Util;
 
 namespace APPER1
 {
-    [Activity(Label = "OpslagActivity")]
+    [ActivityAttribute(Label = "Kleuren3", MainLauncher = false)]
     public class OpslagActivity : Activity
     {
         ListView kleurLijst;
-        string[] kleurNamen = { "AliceBlue", "AntiqueWhite", "Aqua", "Aquamarine", "Azure", "Beige", "Bisque", "Black", "BlanchedAlmond", "Blue", "BlueViolet", "Brown", "BurlyWood", "CadetBlue", "Chartreuse", "Chocolate", "Coral", "CornflowerBlue", "Cornsilk", "Crimson", "Cyan", "DarkBlue", "DarkCyan", "DarkGoldenrod", "DarkGray", "DarkGreen", "DarkKhaki", "DarkMagenta", "DarkOliveGreen", "DarkOrange", "DarkOrchid", "DarkRed", "DarkSalmon", "DarkSeaGreen", "DarkSlateBlue", "DarkSlateGray", "DarkTurquoise", "DarkViolet", "DeepPink", "DeepSkyBlue", "DimGray", "DodgerBlue", "Firebrick", "FloralWhite", "ForestGreen", "Fuchsia", "Gainsboro", "GhostWhite", "Gold", "Goldenrod", "Gray", "Green", "GreenYellow", "Honeydew", "HotPink", "IndianRed", "Indigo", "Ivory", "Khaki", "Lavender", "LavenderBlush", "LawnGreen", "LemonChiffon", "LightBlue", "LightCoral", "LightCyan", "LightGoldenrodYellow", "LightGray", "LightGreen", "LightPink", "LightSalmon", "LightSeaGreen", "LightSkyBlue", "LightSlateGray", "LightSteelBlue", "LightYellow", "Lime", "LimeGreen", "Linen", "Magenta", "Maroon", "MediumAquamarine", "MediumBlue", "MediumOrchid", "MediumPurple", "MediumSeaGreen", "MediumSlateBlue", "MediumSpringGreen", "MediumTurquoise", "MediumVioletRed", "MidnightBlue", "MintCream", "MistyRose", "Moccasin", "NavajoWhite", "Navy", "OldLace", "Olive", "OliveDrab", "Orange", "OrangeRed", "Orchid", "PaleGoldenrod", "PaleGreen", "PaleTurquoise", "PaleVioletRed", "PapayaWhip", "PeachPuff", "Peru", "Pink", "Plum", "PowderBlue", "Purple", "Red", "RosyBrown", "RoyalBlue", "SaddleBrown", "Salmon", "SandyBrown", "SeaGreen", "SeaShell", "Sienna", "Silver", "SkyBlue", "SlateBlue", "SlateGray", "Snow", "SpringGreen", "SteelBlue", "Tan", "Teal", "Thistle", "Tomato", "Transparent", "Turquoise", "Violet" , "Wheat", "White", "WhiteSmoke", "Yellow", "YellowGreen" };
+        List<KleurItem> kleuren;
+        KleurItem[] defaultKleuren = { new KleurItem("Rood"), new KleurItem("Groen"), new KleurItem("Geel") };
+        KleurenAdapter kleurAdapter;
         KaartView utrecht;
-        protected override void OnCreate(Bundle savedInstanceState)
+        public string track;
+
+        protected override void OnCreate(Bundle bundle)
         {
-            base.OnCreate(savedInstanceState);
-
-            utrecht = new KaartView(this);
-            TextView test = new TextView(this);
-            test.Text = "Hieronder Zit u uw opgeslagen trainingen.";
-            this.SetContentView(test);
-
-            ArrayAdapter<string> kleurAdapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItemChecked, kleurNamen);
-            // probeer ook eens: SimpleListItemMultipleChoice en SimpleListItemActivated1
+            base.OnCreate(bundle);
+            this.BeginKleuren();
             kleurLijst = new ListView(this);
-            kleurLijst.Adapter = kleurAdapter;
-            kleurLijst.ChoiceMode = ChoiceMode.Single;
-            kleurLijst.ItemClick += itemklik;
-            kleurLijst.SetItemChecked(2, true);
-            kleurLijst.SetItemChecked(4, true);
-            kleurLijst.SetItemChecked(7, true);
+            kleurLijst.ChoiceMode = ChoiceMode.None;
+            kleurLijst.ItemClick += itemKlik;
+            this.LeesKleuren();
+
+            track = this.Intent.GetStringExtra("track2");
+
+            Button nieuw = new Button(this);
+            nieuw.Text = "Nieuw item";
+            nieuw.Click += nieuwItem;
             Button versturen = new Button(this);
             versturen.Text = "Voorkeur versturen";
             versturen.Click += verstuurKlik;
-            
+
+            LinearLayout rij = new LinearLayout(this);
+            rij.Orientation = Orientation.Horizontal;
+            rij.AddView(nieuw);
+            rij.AddView(versturen);
+
             LinearLayout stapel = new LinearLayout(this);
             stapel.Orientation = Orientation.Vertical;
-            stapel.AddView(versturen);
+            stapel.AddView(rij);
             stapel.AddView(kleurLijst);
             this.SetContentView(stapel);
         }
         private void verstuurKlik(object sender, EventArgs e)
         {
-            string bericht = "Dit vind ik mooie kleuren:\n";
-            SparseBooleanArray a = kleurLijst.CheckedItemPositions;
-            for (int k = 0; k < a.Size(); k++)
-                if (a.ValueAt(k))
-                    bericht += $"{kleurNamen[a.KeyAt(k)]}\n";
-           // Intent i = new Intent(Intent.ActionSend);
-            //i.SetType("text/plain");
-            //i.PutExtra(Intent.ExtraText, bericht);
-           // this.StartActivity(i); 
+             string bericht = "<html><body><table>\n";
+            //string bericht = "F U C C me up jeron \n";
+            foreach (KleurItem item in kleuren)
+            {
+               // bericht += $"<tr bgcolor=#{item.Kleur.R:X2}{item.Kleur.G:X2}{item.Kleur.B:X2}>";
+               //ericht += $"<td>{item.Naam}</td></tr>\n";
 
-             utrecht.stringLooppad = bericht;
-            Console.WriteLine(bericht);
-
-
+               // bericht += $"bgcolor=#{item.Kleur.R:X2}{item.Kleur.G:X2}{item.Kleur.B:X2}";
+               // bericht += $"{item.Naam}\n";
+            }
+            //bericht += "</table></body></html>\n";
+            Intent i = new Intent(Intent.ActionSend);
+            i.SetType("text/html");
+            i.PutExtra(Intent.ExtraText, bericht);
+            this.StartActivity(i);
         }
-        private void itemklik(object sender, AdapterView.ItemClickEventArgs e)
-        {
-            string t = kleurNamen[e.Position];
-            Toast.MakeText(this, t, Android.Widget.ToastLength.Short).Show();
-        }
 
+        private void nieuwItem(object sender, EventArgs e)
+        {
+            utrecht = new KaartView(this);
+            //string bericht = utrecht.Bericht(utrecht.looppad);
+            Console.WriteLine("OPSLAGACTIVITY HIERO HALLO" + track);
+            Intent i = new Intent(this, typeof(Toevoegen));
+            i.SetType("text/plain");
+            i.PutExtra("track3", track);
+            this.StartActivity(i);
+            this.StartActivityForResult(i, 1000000);
+        }
+
+        private void itemKlik(object sender, AdapterView.ItemClickEventArgs e)
+        {
+            int pos = e.Position;
+            Intent i = new Intent(this, typeof(Toevoegen));
+            KleurItem item = kleurAdapter[pos];
+            i.PutExtra("track3", track);
+         //   i.PutExtra("kleur", item.Kleur.ToArgb());
+            this.StartActivityForResult(i, pos);
+
+            utrecht.nepLooppad.Clear();
+
+            string [] berichtSplit = track.Split();
+            foreach (string s in berichtSplit)
+            {
+               //  utrecht.nepLooppad.Add(s);
+               // utrecht.nepLooppad.Add(new KaartView.Opslaan(rdPoint.X, rdPoint.Y, nepTijden[1]));
+
+            }
+
+
+        } 
+
+        // Dit is de klasse KleurenApp3
+        // Tot hier was het hetzelfde als KleurenApp2. Maar de rest is anders:
+
+        SQLiteConnection database;
+
+        protected void BeginKleuren()
+        {
+            string docsFolder = System.Environment.GetFolderPath
+                                  (System.Environment.SpecialFolder.MyDocuments);
+            string pad = System.IO.Path.Combine(docsFolder, "kleuren.db");
+            bool bestaat = File.Exists(pad);
+            database = new SQLiteConnection(pad);
+            if (!bestaat)
+            {
+                database.CreateTable<KleurItem>();
+                foreach (KleurItem k in defaultKleuren)
+                    database.Insert(k);
+            }
+        }
+
+        protected void LeesKleuren()
+        {
+            kleuren = new List<KleurItem>();
+            TableQuery<KleurItem> query = database.Table<KleurItem>();
+            foreach (KleurItem k in query)
+                kleuren.Add(k);
+            kleurAdapter = new KleurenAdapter(this, kleuren);
+            kleurLijst.Adapter = kleurAdapter;
+        }
+
+        protected override void OnActivityResult(int pos, Result res, Intent data)
+        {
+            if (res == Result.Ok)
+            {
+                string naam = data.GetStringExtra("naam");
+                Color kleur = new Color(data.GetIntExtra("kleur", 0));
+                if (pos == 1000000)
+                    database.Insert(new KleurItem(naam));
+                else
+                {
+                    KleurItem k = new KleurItem(naam);
+                    k.Id = kleuren[pos].Id;
+                    database.Update(k);
+                }
+            }
+            else
+            {
+                if (pos < 1000000)
+                {
+                    KleurItem k = new KleurItem();
+                    k.Id = kleuren[pos].Id;
+                    database.Delete(k);
+                }
+            }
+            this.LeesKleuren();
+        } 
     }
 }
