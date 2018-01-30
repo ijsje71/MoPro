@@ -22,14 +22,134 @@ namespace APPER1
         public double noord, oost;
         public bool volg = false;  //boolean om aan te duiden of de locatie gevolgd en getekend moet worden
         public List<Opslaan> looppad = new List<Opslaan>();   //lijst van alle punten waar de gebruiker geweest is
+        public List<PointF> nepLooppad = new List<PointF>();   //lijst voor de nep track
+        PointF[] nepPunten = { new PointF(  (float)52.08705, (float)5.168281  ),
+new PointF((float)52.08705, (float)5.168281),
+new PointF((float)52.08702, (float)5.168191),
+new PointF((float)52.08715, (float)5.167818),
+new PointF((float)52.08715, (float)5.167841),
+new PointF((float)52.08716, (float)5.167843),
+new PointF((float)52.08717, (float)5.167835),
+new PointF((float)52.08717, (float)5.16787 ),
+new PointF((float)52.08717, (float)5.167865),
+new PointF((float)52.08717, (float)5.167864),
+new PointF((float)52.08716, (float)5.167912),
+new PointF((float)52.08716, (float)5.167931),
+new PointF((float)52.08716, (float)5.167952),
+new PointF((float)52.08716, (float)5.167974),
+new PointF((float)52.08716, (float)5.167997),
+new PointF((float)52.08716, (float)5.168017),
+new PointF((float)52.08716, (float)5.168036),
+new PointF((float)52.08716, (float)5.168056),
+new PointF((float)52.08715, (float)5.168074),
+new PointF((float)52.08715, (float)5.168092),
+new PointF((float)52.08714, (float)5.16811 ),
+new PointF((float)52.08714, (float)5.168128),
+new PointF((float)52.08714, (float)5.168147),
+new PointF((float)52.08714, (float)5.168166),
+new PointF((float)52.08715, (float)5.168185),
+new PointF((float)52.08715, (float)5.168205),
+new PointF((float)52.08714, (float)5.168226),
+new PointF((float)52.08714, (float)5.168248),
+new PointF((float)52.08714, (float)5.16827 ),
+new PointF((float)52.08715, (float)5.168296),
+new PointF((float)52.08715, (float)5.168322),
+new PointF((float)52.08715, (float)5.168348),
+new PointF((float)52.08715, (float)5.168374),
+new PointF((float)52.08715, (float)5.168401),
+new PointF((float)52.08715, (float)5.168429),
+new PointF((float)52.08714, (float)5.168451),
+new PointF((float)52.08713, (float)5.168466),
+new PointF((float)52.08712, (float)5.168473),
+new PointF((float)52.0871, (float)5.168478 ),
+new PointF((float)52.08709, (float)5.168484),
+new PointF((float)52.08708, (float)5.168494),
+new PointF((float)52.08707, (float)5.168506),
+new PointF((float)52.08706, (float)5.168521),
+new PointF((float)52.08705, (float)5.168538),
+new PointF((float)52.08704, (float)5.168552),
+new PointF((float)52.08704, (float)5.168566),
+new PointF((float)52.08703, (float)5.168577),
+new PointF((float)52.08702, (float)5.16858 ),
+new PointF((float)52.08701, (float)5.168577),
+new PointF((float)52.08699, (float)5.168576),
+new PointF((float)52.08698, (float)5.168575),
+new PointF((float)52.08697, (float)5.168579),
+new PointF((float)52.08696, (float)5.168586),
+new PointF((float)52.08695, (float)5.168592),
+new PointF((float)52.08693, (float)5.168594),
+new PointF((float)52.08692, (float)5.168591),
+new PointF((float)52.08691, (float)5.168589),
+new PointF((float)52.08689, (float)5.168587),
+new PointF((float)52.08688, (float)5.168587),
+new PointF((float)52.08687, (float)5.16859 ),
+new PointF((float)52.08686, (float)5.168599),
+new PointF((float)52.08685, (float)5.168612),
+new PointF((float)52.08683, (float)5.168625),
+new PointF((float)52.08682, (float)5.168633),
+new PointF((float)52.0868, (float)5.168636 ),
+new PointF((float)52.08678, (float)5.168635),
+new PointF((float)52.08677, (float)5.168635),
+new PointF((float)52.08675, (float)5.168634),
+new PointF((float)52.08674, (float)5.16863 ),
+new PointF((float)52.08672, (float)5.168626),
+new PointF((float)52.08671, (float)5.168625),
+new PointF((float)52.0867, (float)5.168617 ),
+new PointF((float)52.08669, (float)5.168604),
+new PointF((float)52.08667, (float)5.168591),
+new PointF((float)52.08666, (float)5.168585),
+new PointF((float)52.08665, (float)5.168586),
+new PointF((float)52.08664, (float)5.168589),
+new PointF((float)52.08662, (float)5.168592),
+new PointF((float)52.08661, (float)5.168596),
+new PointF((float)52.0866, (float)5.168597 ),
+new PointF((float)52.08658, (float)5.1686 ),
+new PointF((float)52.08657, (float)5.168606),
+new PointF((float)52.08655, (float)5.168617),
+new PointF((float)52.08654, (float)5.168624),
+new PointF((float)52.08652, (float)5.168634),
+new PointF((float)52.08652, (float)5.168649),
+new PointF((float)52.0865, (float)5.168659 ),
+new PointF((float)52.08649, (float)5.168664),
+new PointF((float)52.08648, (float)5.168659),
+new PointF((float)52.08646, (float)5.168656),
+new PointF((float)52.08645, (float)5.168651),
+new PointF((float)52.08644, (float)5.168652),
+new PointF((float)52.08642, (float)5.168655),
+new PointF((float)52.08641, (float)5.168662),
+new PointF((float)52.0864, (float)5.168663 ),
+new PointF((float)52.08638, (float)5.168657),
+new PointF((float)52.08637, (float)5.168658),
+new PointF((float)52.08636, (float)5.16867 ),
+new PointF((float)52.08635, (float)5.168683),
+new PointF((float)52.08634, (float)5.168685),
+new PointF((float)52.08633, (float)5.168676),
+new PointF((float)52.08632, (float)5.168667),
+new PointF((float)52.0863, (float)5.168667),
+new PointF((float)52.08629, (float)5.168669),
+new PointF((float)52.08627, (float)5.168679),
+new PointF((float)52.08627, (float)5.168699),
+new PointF((float)52.08627, (float)5.168721),
+new PointF((float)52.08627, (float)5.168744),
+new PointF((float)52.08627, (float)5.168764),
+new PointF((float)52.08627, (float)5.168787),
+new PointF((float)52.08627, (float)5.168809),
+new PointF((float)52.08627, (float)5.168832)};
         float Hoek;                                    
         PointF uithof = new PointF(140500, 455000);  // Uithof positie, uitgangspunt van de app
         PointF centrum = new PointF(139000, 455500);  // Centrum van de kaart
         float dx, dy, ax, ay;
-        //Array tijden = 
+        List<DateTime> tijdstippen = new List<DateTime>();
+        int i;
+        float drawX;
+        float drawY;
+
+
 
         public KaartView(Context c) : base(c)
         {
+            
+
             this.SetBackgroundColor(Color.Black);
             // Declareert de bitmap options aan een variabele
             BitmapFactory.Options opt = new BitmapFactory.Options();
@@ -50,11 +170,14 @@ namespace APPER1
                 lm.RequestLocationUpdates(lp, 0, 0, this);
             // Event handler voor wanneer de kaart wordt aangeraakt
             this.Touch += RaakAaan;
+            
         }
       
         protected override void OnDraw(Canvas canvas)
         {
             base.OnDraw(canvas);
+
+            
 
             // Schaal indien de applicatie net is opgestart
             if (Schaal == 0)
@@ -71,7 +194,10 @@ namespace APPER1
             mat.PostScale(this.Schaal, this.Schaal);
             mat.PostTranslate(this.Width / 2, this.Height / 2);
             // Tekenen van de kaart met de eigen matrix
+            Paint kleur = new Paint();
+            kleur.Color = Color.Red;
             canvas.DrawBitmap(utrecht, mat, verf);
+            
 
             // Matrix voor de loper
             mat = new Matrix();
@@ -83,8 +209,9 @@ namespace APPER1
             mat.PostTranslate((this.Width / 2 + (uithof.X - centrum.X) / 2.5f * this.Schaal), this.Height / 2 + (centrum.Y - uithof.Y) / 2.5f * this.Schaal);
             // Tekenen van de loper met de eigen schalen
             canvas.DrawBitmap(this.loper, mat, verf);
-            Paint kleur = new Paint();
-            kleur.Color = Color.Red;
+            
+
+            
 
             // Loop die alle punten in de klasse af gaat
             foreach (Opslaan punt in looppad)
@@ -102,6 +229,24 @@ namespace APPER1
                 canvas.DrawCircle(x, y, 9, kleur);          // Tekent het gelopen pad
             }
 
+            foreach (PointF punt in nepPunten)
+            {
+
+                float bitmapx = (punt.X - centrum.X) / 2.5f;  // nep punten omzetten in schermrelatieve pixels
+                float bitmapy = (centrum.Y - punt.Y) / 2.5f;
+
+                float schermx = bitmapx * this.Schaal;        // Omzetten naar de gebruikte schaal
+                float schermy = bitmapy * this.Schaal;
+
+                float x = this.Width / 2 + schermx;
+                float y = this.Height / 2 + schermy;
+                mat.PostScale(this.Schaal, this.Schaal);
+                canvas.DrawCircle(x, y, 9, kleur);          // Tekent het nep pad
+            }
+
+
+
+
         }
         public void OnSensorChanged(SensorEvent e)            // Methode die ervoor zorgt dat de pointer in de goede richting wordt getekend
         {
@@ -112,13 +257,32 @@ namespace APPER1
         public void OnLocationChanged(Location location)     // Methode die ervoor zorgt dat er elke keer een nieuw punt wordt geregistreerd als de locatie is gewijzigd
         {
             PointF geo = new PointF((float)location.Latitude, (float)location.Longitude);
+            
+            if (looppad.Count == 0) {
+                PointF convert = Projectie.Geo2RD(geo);
+                drawX = convert.X;
+                drawY = convert.Y;
+                if (volg)
+                looppad.Add(new Opslaan(convert));
+
+                Console.WriteLine("drawX + drawY " + drawX + " " + drawY);
+            }
+            Console.WriteLine("drawX: " + drawX);
             // Huidige locatie in RD coordinaten
             uithof = Projectie.Geo2RD(geo);
-            if (volg)
+            huidigTijdstip = DateTime.Now;
+            Console.WriteLine($"x: {uithof.X} + drawX: {drawX} + uithofX - drawX = {uithof.X - drawX}");
+            Console.WriteLine("totale if statement: " + (volg && (Math.Abs(uithof.X - drawX) > 5 || Math.Abs(uithof.Y - drawY) > 5)));
+            Console.WriteLine("drawX deel: " + (Math.Abs(uithof.X - drawX) > 5));
+            Console.WriteLine("drawY deel: " + (Math.Abs(uithof.Y - drawY) > 5));
+            Console.WriteLine("or statement deel: " + (Math.Abs(uithof.X - drawX) > 5 || Math.Abs(uithof.Y - drawY) > 5));
+            if (volg && (Math.Abs(uithof.X - drawX) > 5 || Math.Abs(uithof.Y - drawY) > 5))
             {
                 // Huidige punt toevoegen aan de klasse
+                drawX = uithof.X;
+                drawY = uithof.Y;
                 looppad.Add(new Opslaan(uithof));
-                
+                tijdstippen.Add(huidigTijdstip); //zet tijdstip van het gelopen punt
             }
             this.Invalidate();
         }
@@ -158,6 +322,7 @@ namespace APPER1
         PointF huidig2;
         float oudeSchaal;
         PointF oudeCentrum;
+        DateTime huidigTijdstip;
 
         public void RaakAaan(object o, TouchEventArgs tea)
         {
@@ -278,20 +443,23 @@ namespace APPER1
         {
             public float x;
             public float y;
+            public DateTime tijd;
             
 
             public Opslaan(PointF p)
             {
+                
                 // Zet de x en de y in 1 punt
                 x = p.X;
                 y = p.Y;
+                tijd = DateTime.Now;
             }
             
-            public Opslaan(float x, float y)
+            public Opslaan(float x, float y, DateTime tijd)
             {
                 this.x = x;
                 this.y = y;
-                
+                this.tijd = tijd;
             }
 
         }
@@ -300,10 +468,14 @@ namespace APPER1
             string stringLooppad = "";
             foreach (Opslaan punt in looppad)
             {
-                stringLooppad += $"{punt.x} {punt.y} \n";
+                PointF convertPunt = new PointF(punt.x, punt.y);
+                //PointF geoPunt = Projectie.RD2Geo(convertPunt);
+                stringLooppad += $"{convertPunt.X} {convertPunt.Y} {punt.tijd}\n";
+
             }
 
             return stringLooppad;
         }
+        
     }
 }
