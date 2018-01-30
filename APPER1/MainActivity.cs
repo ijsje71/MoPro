@@ -158,7 +158,8 @@ namespace APPER1
         public void Delen(object o, EventArgs ea)
         {
             // If-statement die checkt of de training al is gestart voordat de track gedeeld
-            if (utrecht.looppad.Count == 0)
+            //if (utrecht.looppad.Count == 0)
+          if  (utrecht.stringLooppad == null)
             {
                 AlertDialog.Builder deelPopup = new AlertDialog.Builder(this);
                 deelPopup.SetTitle("Training nog niet gestart");
@@ -179,6 +180,10 @@ namespace APPER1
         public void Opslag(object o, EventArgs ea)
         {
             StartActivity(typeof(OpslagActivity));
+
+            Intent i = new Intent(this, typeof(OpslagActivity));
+           // i.PutExtra("startwaarde", stand);
+            this.StartActivity(i);
         }
 
 

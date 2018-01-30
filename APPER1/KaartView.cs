@@ -158,6 +158,7 @@ namespace APPER1
         PointF huidig2;
         float oudeSchaal;
         PointF oudeCentrum;
+        public string stringLooppad = "";
 
         public void RaakAaan(object o, TouchEventArgs tea)
         {
@@ -297,7 +298,7 @@ namespace APPER1
         }
         public string Bericht(List<Opslaan> looppad)
         {
-            string stringLooppad = "";
+           // string stringLooppad = "";
             foreach (Opslaan punt in looppad)
             {
                 stringLooppad += $"{punt.x} {punt.y} \n";
