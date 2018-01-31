@@ -109,8 +109,9 @@ namespace APPER1
                 float rddx = (float)rdx;
                 float rddy = (float)rdy;
                 utrecht.nepLooppad.Add(new KaartView.Opslaan(rddx, rddy, datumtijd));
+               
             }
-
+            utrecht.Invalidate();
         } 
 
         // Dit is de klasse KleurenApp3

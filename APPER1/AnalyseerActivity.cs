@@ -61,11 +61,13 @@ namespace APPER1
 
             LinearLayout verticaal = new LinearLayout(this);
             verticaal.Orientation = Orientation.Vertical;
-            verticaal.AddView(gemSnelheid);
-            verticaal.AddView(maxSnelheid);
+           
+            verticaal.AddView(tijdsduurTitel);
             verticaal.AddView(tijdsduur);
+            verticaal.AddView(gelopenAfstandTitel);
             verticaal.AddView(gelopenAfstand);
-
+            verticaal.AddView(maxSnelheidTitel);
+            verticaal.AddView(maxSnelheid);
             this.SetContentView(verticaal);
 
         }
