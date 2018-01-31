@@ -328,6 +328,8 @@ new PointF((float)52.08627, (float)5.168832)};
             // Tekenen van de kaart met de eigen matrix
             Paint kleur = new Paint();
             kleur.Color = Color.Red;
+            Paint nepKleur = new Paint();
+            nepKleur.Color = Color.Blue;
             canvas.DrawBitmap(utrecht, mat, verf);
             
 
@@ -359,7 +361,6 @@ new PointF((float)52.08627, (float)5.168832)};
             }
             foreach (Opslaan punt in nepLooppad)
             {
-
                 float bitmapx = (punt.x - centrum.X) / 2.5f;  // nep punten omzetten in schermrelatieve pixels
                 float bitmapy = (centrum.Y - punt.y) / 2.5f;
 
@@ -369,23 +370,9 @@ new PointF((float)52.08627, (float)5.168832)};
                 float x = this.Width / 2 + schermx;
                 float y = this.Height / 2 + schermy;
                 mat.PostScale(this.Schaal, this.Schaal);
-                canvas.DrawCircle(x, y, 9, kleur);          // Tekent het nep pad
+                canvas.DrawCircle(x, y, 9, nepKleur);          // Tekent het nep pad
             }
 
-            foreach (Opslaan punt in nepLooppad)
-            {
-
-                float bitmapx = (punt.x - centrum.X) / 2.5f;  // nep punten omzetten in schermrelatieve pixels
-                float bitmapy = (centrum.Y - punt.y) / 2.5f;
-
-                float schermx = bitmapx * this.Schaal;        // Omzetten naar de gebruikte schaal
-                float schermy = bitmapy * this.Schaal;
-
-                float x = this.Width / 2 + schermx;
-                float y = this.Height / 2 + schermy;
-                mat.PostScale(this.Schaal, this.Schaal);
-                canvas.DrawCircle(x, y, 9, kleur);          // Tekent het nep pad
-            }
 
 
 
