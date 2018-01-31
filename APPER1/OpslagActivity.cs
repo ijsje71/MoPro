@@ -41,10 +41,12 @@ namespace APPER1
             nieuw.Text = "Nieuw item";
             nieuw.Click += nieuwItem;
 
+            // Declaraties van de knop om terug te keren naar het begin scherm
             Button terug = new Button(this);
             terug.Text = "Terug naar de kaart";
             terug.Click += Terug;
 
+            // Layout van de knoppen
             LinearLayout knoppen = new LinearLayout(this);
             knoppen.AddView(nieuw);
             knoppen.AddView(terug);
@@ -114,7 +116,9 @@ namespace APPER1
             TableQuery<PuntItem> query = database.Table<PuntItem>();
             foreach (PuntItem k in query)
                 punten.Add(k);
+            // Stuurt de punten die zijn gevonden naar de Adapter klasse om ze te formatten
             puntAdapter = new PuntenAdapter(this, punten);
+            // Stopt de gegevens voor de database handler in de puntenlijst
             puntenLijst.Adapter = puntAdapter;
         }
 
