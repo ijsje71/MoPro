@@ -89,16 +89,27 @@ namespace APPER1
          //   i.PutExtra("kleur", item.Kleur.ToArgb());
             this.StartActivityForResult(i, pos);
 
-            utrecht.nepLooppad.Clear();
+            //utrecht.nepLooppad.Clear();
 
             string [] berichtSplit = track.Split();
-            foreach (string s in berichtSplit)
+            int tijd = -1;
+            int datum = -2;
+            int y = -3;
+            int x = -4;
+            for (int a = 0; a < (berichtSplit.Length / 4); a++)
             {
-               //  utrecht.nepLooppad.Add(s);
-               // utrecht.nepLooppad.Add(new KaartView.Opslaan(rdPoint.X, rdPoint.Y, nepTijden[1]));
-
+                datum = datum + 4;
+                tijd = tijd + 4;
+                y = y + 4;
+                x = x + 4;
+                string datetime = berichtSplit[datum] + berichtSplit[tijd];
+                DateTime datumtijd = DateTime.Parse(datetime);
+                int rdx = int.Parse(berichtSplit[x]);
+                int rdy = int.Parse(berichtSplit[y]);
+                float rddx = (float)rdx;
+                float rddy = (float)rdy;
+                utrecht.nepLooppad.Add(new KaartView.Opslaan(rddx, rddy, datumtijd));
             }
-
 
         } 
 

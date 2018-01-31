@@ -21,11 +21,17 @@ namespace APPER1
         {
             base.OnCreate(b);
 
-            // Create your application here
+            TextView GemSnelheidTitel = new TextView(this);
+            GemSnelheidTitel.Text = "Gemiddelde snelheid:";
             TextView gemSnelheid = new TextView(this);
-            
+            TextView maxSnelheidTitel = new TextView(this);
+            maxSnelheidTitel.Text = "Maximale snelheid gelopen";
             TextView maxSnelheid = new TextView(this);
+            TextView tijdsduurTitel = new TextView(this);
+            tijdsduurTitel.Text = "Totale tijdsduur:";
             TextView tijdsduur = new TextView(this);
+            TextView gelopenAfstandTitel = new TextView(this);
+            gelopenAfstandTitel.Text = "Gelopen afstand:";
             TextView gelopenAfstand = new TextView(this);
 
 
@@ -44,7 +50,7 @@ namespace APPER1
 
 
             tijdsduur.Text = tijdsduurSom.ToString();
-
+           // tijdsduur.Text = track;
 
             //int j = -1;
             //for (int i = 0; i < (splitTrack.Length / 4); i++) {

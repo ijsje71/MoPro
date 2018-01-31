@@ -80,7 +80,11 @@ namespace APPER1
             delen.Text = "Delen";
             delen.SetTextColor(Color.White);
 
-           
+           // Declaraties voor de analyseer knop
+            Button analyseren = new Button(this);
+            analyseren.Text = "Analyseren";
+            analyseren.SetTextColor(Color.White);
+            analyseren.Click += Analyseren;
 
             // Declaraties voor de 'opslag' knop
             Button laden = new Button(this);
@@ -104,6 +108,7 @@ namespace APPER1
             horizontaal2.Orientation = Orientation.Horizontal;
            
             horizontaal2.AddView(laden);
+            horizontaal2.AddView(analyseren);
 
             // Opmaak van het scherm
             LinearLayout verticaal = new LinearLayout(this);
@@ -157,6 +162,24 @@ namespace APPER1
                 popup.SetPositiveButton("OK", this.Cancel);
                 popup.Create().Show();
             }
+        }
+
+        public void Analyseren(object o, EventArgs ea)
+        {
+            string bericht;
+            if (utrecht.trainingGestart)
+            {
+                bericht = utrecht.Bericht(utrecht.looppad);
+            }
+            else
+            {
+                bericht = utrecht.Bericht(utrecht.nepLooppad);
+            }
+            Intent i = new Intent(this, typeof(AnalyseerActivity));
+            i.SetType("text/plain");
+            i.PutExtra("track", bericht);
+            this.StartActivity(i);
+
         }
 
         public void Delen(object o, EventArgs ea)
