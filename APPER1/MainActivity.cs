@@ -148,6 +148,7 @@ namespace APPER1
                 alert.SetTitle("Weet je het zeker?");
                 alert.SetMessage("Weet je zeker dat je jouw training wilt opschonen?");
                 alert.SetPositiveButton("Ja", utrecht.Opschonen);
+                
                 // Verwijzing naar de Cancel methode
                 alert.SetNegativeButton("Nee", this.Cancel);
                 alert.Create().Show();
