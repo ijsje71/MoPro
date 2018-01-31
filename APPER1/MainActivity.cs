@@ -20,7 +20,7 @@ namespace APPER1
         OpslagActivity opslag;
         Toevoegen toevoeg;
         string bericht;
-        string loadedTrack;
+
 
         protected override void OnResume()
         {
@@ -148,6 +148,7 @@ namespace APPER1
                 alert.SetTitle("Weet je het zeker?");
                 alert.SetMessage("Weet je zeker dat je jouw training wilt opschonen?");
                 alert.SetPositiveButton("Ja", utrecht.Opschonen);
+                
                 // Verwijzing naar de Cancel methode
                 alert.SetNegativeButton("Nee", this.Cancel);
                 alert.Create().Show();
@@ -167,14 +168,10 @@ namespace APPER1
         public void Analyseren(object o, EventArgs ea)
         {
             string bericht;
-            if (utrecht.trainingGestart)
-            {
+            
                 bericht = utrecht.Bericht(utrecht.looppad);
-            }
-            else
-            {
-                bericht = utrecht.Bericht(utrecht.nepLooppad);
-            }
+            
+           
             Intent i = new Intent(this, typeof(AnalyseerActivity));
             i.SetType("text/plain");
             i.PutExtra("track", bericht);
@@ -184,8 +181,7 @@ namespace APPER1
 
         public void Delen(object o, EventArgs ea)
         {
-            // If-statement die checkt of de training al is gestart voordat de track gedeeld
-            //if (utrecht.looppad.Count == 0)
+          
             if (utrecht.stringLooppad == null)
             {
                 AlertDialog.Builder deelPopup = new AlertDialog.Builder(this);
@@ -204,22 +200,18 @@ namespace APPER1
                 i.SetType("text/plain");
                 i.PutExtra(Intent.ExtraText, bericht);
                 this.StartActivity(i);
+                //toevoeg.naamVeld.Text = bericht;
             }
         }
 
         public void Opslag(object o, EventArgs ea)
         {
-            if (utrecht.volg)
-            {
-                utrecht.volg = false;
-                startstop.Text = "Start";
-            }
-
-            string bericht = utrecht.Bericht(utrecht.looppad);
+                       string bericht = utrecht.Bericht(utrecht.looppad);
             Intent i = new Intent(this, typeof(OpslagActivity));
             i.SetType("text/plain");
             i.PutExtra("track2", bericht);
             Console.WriteLine("HEYHALLO DIT IS DE MAINACTIVITY OVER" + bericht);
+            this.StartActivity(i);
             this.StartActivityForResult(i, 1000000);
         }
 
@@ -283,39 +275,6 @@ namespace APPER1
         {
 
         }
-
-        protected override void OnActivityResult(int code, Result res, Intent data)
-        {
-            base.OnActivityResult(code, res, data);
-            if (code == 1000000 && res == Result.Ok)
-            {
-                this.loadedTrack = data.GetStringExtra("eindwaarde");
-                utrecht.nepLooppad.Clear();
-                utrecht.looppad.Clear();
-                Console.WriteLine($"Loaded track: {loadedTrack}");
-                // De track in een array van strings
-                string[] berichtSplit = loadedTrack.Split();
-
-                // int variabelen nodig om de correcte waarde uit ieder punt/tijdstip te halen
-                int tijd = -1;
-                int datum = -2;
-                int y = -3;
-                int x = -4;
-                for (int a = 0; a < (berichtSplit.Length / 4); a++)
-                {
-                    datum = datum + 4;
-                    tijd = tijd + 4;
-                    y = y + 4;
-                    x = x + 4;
-                    TimeSpan time = TimeSpan.Parse(berichtSplit[tijd]);
-                    DateTime date = DateTime.Parse(berichtSplit[datum]);
-                    DateTime datumtijd = date + time;
-                    float rdx = float.Parse(berichtSplit[x]);
-                    float rdy = float.Parse(berichtSplit[y]);
-                    utrecht.nepLooppad.Add(new KaartView.Opslaan(rdx, rdy, datumtijd));
-                }
-            }
-        }
     }
 }
 

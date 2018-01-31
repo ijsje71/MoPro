@@ -24,12 +24,12 @@ namespace APPER1
         public bool volg = false;  //boolean om aan te duiden of de locatie gevolgd en getekend moet worden
         public List<Opslaan> looppad = new List<Opslaan>();   //lijst van alle punten waar de gebruiker geweest is
 
-        public List<Opslaan> nepLooppad = new List<Opslaan>(); //lijst voor de nep track
+        //public List<Opslaan> nepLooppad = new List<Opslaan>(); //lijst voor de nep track
         float Hoek;
 
-       
 
-        DateTime[] nepTijden = {
+
+        DateTime[] tijdstippen = {
 new DateTime(   2018,1,30,  10,00,30  ),
 new DateTime(   2018,1,30,  10,00,31    ),
 new DateTime(   2018,1,30,  10,00,32    ),
@@ -141,12 +141,12 @@ new DateTime(   2018,1,30,  10,02,17    ),
 new DateTime(   2018,1,30,  10,02,18    ),
 new DateTime(   2018,1,30,  10,02,19    ),
 new DateTime(   2018,1,30,  10,02,20    ),
-
 new DateTime(   2018,1,30,  10,02,21    ) };
 
 
 
-        PointF[] nepPunten = { new PointF(  (float)52.08705, (float)5.168281  ),
+        PointF[] punt = {
+            new PointF(  (float)52.08705, (float)5.168281  ),
 new PointF((float)52.08705, (float)5.168281),
 new PointF((float)52.08702, (float)5.168191),
 new PointF((float)52.08715, (float)5.167818),
@@ -257,14 +257,15 @@ new PointF((float)52.08627, (float)5.168744),
 new PointF((float)52.08627, (float)5.168764),
 new PointF((float)52.08627, (float)5.168787),
 new PointF((float)52.08627, (float)5.168809),
-new PointF((float)52.08627, (float)5.168832)};
+new PointF((float)52.08627, (float)5.168832)
+        };
 
-                                  
+
 
         PointF uithof = new PointF(140500, 455000);  // Uithof positie, uitgangspunt van de app
         PointF centrum = new PointF(139000, 455500);  // Centrum van de kaart
         float dx, dy, ax, ay;
-        List<DateTime> tijdstippen = new List<DateTime>();
+        // List<DateTime> tijdstippen = new List<DateTime>();
         int i = 0;
         float drawX;
         float drawY;
@@ -274,10 +275,10 @@ new PointF((float)52.08627, (float)5.168832)};
         public KaartView(Context c) :
             base(c)
         {
-            foreach (PointF punt in nepPunten)
+            foreach (PointF punt in punt)
             {
                 PointF rdPoint = Projectie.Geo2RD(punt);
-                nepLooppad.Add(new Opslaan(rdPoint.X, rdPoint.Y, nepTijden[i]));
+                looppad.Add(new Opslaan(rdPoint.X, rdPoint.Y, tijdstippen[i]));
                 i++;
             }
 
@@ -309,7 +310,7 @@ new PointF((float)52.08627, (float)5.168832)};
         {
             base.OnDraw(canvas);
 
-            
+
 
             // Schaal indien de applicatie net is opgestart
             if (Schaal == 0)
@@ -328,10 +329,8 @@ new PointF((float)52.08627, (float)5.168832)};
             // Tekenen van de kaart met de eigen matrix
             Paint kleur = new Paint();
             kleur.Color = Color.Red;
-            Paint nepKleur = new Paint();
-            nepKleur.Color = Color.Blue;
             canvas.DrawBitmap(utrecht, mat, verf);
-            
+
 
             // Matrix voor de loper
             mat = new Matrix();
@@ -359,23 +358,6 @@ new PointF((float)52.08627, (float)5.168832)};
                 mat.PostScale(this.Schaal, this.Schaal);
                 canvas.DrawCircle(x, y, 9, kleur);          // Tekent het gelopen pad
             }
-            foreach (Opslaan punt in nepLooppad)
-            {
-                float bitmapx = (punt.x - centrum.X) / 2.5f;  // nep punten omzetten in schermrelatieve pixels
-                float bitmapy = (centrum.Y - punt.y) / 2.5f;
-
-                float schermx = bitmapx * this.Schaal;        // Omzetten naar de gebruikte schaal
-                float schermy = bitmapy * this.Schaal;
-
-                float x = this.Width / 2 + schermx;
-                float y = this.Height / 2 + schermy;
-                mat.PostScale(this.Schaal, this.Schaal);
-                canvas.DrawCircle(x, y, 9, nepKleur);          // Tekent het nep pad
-            }
-
-
-
-
 
         }
         public void OnSensorChanged(SensorEvent e)            // Methode die ervoor zorgt dat de pointer in de goede richting wordt getekend
@@ -390,11 +372,12 @@ new PointF((float)52.08627, (float)5.168832)};
             uithof = Projectie.Geo2RD(geo);
 
 
-            if (looppad.Count == 0) {
+            if (looppad.Count == 0)
+            {
                 drawX = uithof.X;
                 drawY = uithof.Y;
                 if (volg)
-                looppad.Add(new Opslaan(uithof.X, uithof.Y, DateTime.Now));
+                    looppad.Add(new Opslaan(uithof.X, uithof.Y, DateTime.Now));
 
             }
             // Huidige locatie in RD coordinaten
@@ -404,7 +387,7 @@ new PointF((float)52.08627, (float)5.168832)};
                 drawX = uithof.X;
                 drawY = uithof.Y;
 
-              
+
 
                 looppad.Add(new Opslaan(uithof.X, uithof.Y, DateTime.Now));
 
@@ -530,7 +513,7 @@ new PointF((float)52.08627, (float)5.168832)};
                 this.Invalidate();
             }
 
-         
+
             // Zorgt ervoor dat de kaart meeschaalt tijdens het pinchen
             this.Invalidate();
 
@@ -547,8 +530,8 @@ new PointF((float)52.08627, (float)5.168832)};
         {
             // Zet de boolean op de tegenovergestelde waarde
             volg = !volg;
-            if (volg)
-                nepLooppad.Clear();
+            if (!volg)
+                volg = true;
             this.Invalidate();
         }
 
@@ -604,6 +587,6 @@ new PointF((float)52.08627, (float)5.168832)};
 
             return stringLooppad;
         }
-        
+
     }
 }
