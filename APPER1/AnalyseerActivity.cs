@@ -15,7 +15,7 @@ namespace APPER1
     [Activity(Label = "AnalyseerActivity")]
     public class AnalyseerActivity : Activity
     {
-        
+        KaartView utrecht;
 
         protected override void OnCreate(Bundle b)
         {
@@ -27,7 +27,7 @@ namespace APPER1
             TextView maxSnelheid = new TextView(this);
             TextView tijdsduur = new TextView(this);
             TextView gelopenAfstand = new TextView(this);
-
+            utrecht = new KaartView(this);
 
             string track = this.Intent.GetStringExtra("track");
             string [] splitTrack = track.Split();
@@ -43,15 +43,26 @@ namespace APPER1
 
 
 
-            tijdsduur.Text = tijdsduurSom.ToString();
+            //tijdsduur.Text = tijdsduurSom.ToString();
 
 
-            //int j = -1;
-            //for (int i = 0; i < (splitTrack.Length / 4); i++) {
-            //    j = j + 4;
-            //    tijdsduur.Text += $"{splitTrack[j]} \n";
-            //    
-            //}
+            int tijd = -1;
+            int datum = -2;
+            int y = -3;
+            int x = -4;
+            for (int i = 0; i < (splitTrack.Length / 4); i++) {
+                datum = datum + 4;
+                tijd = tijd + 4;
+                y = y + 4;
+                x = x + 4;
+                string datetime = splitTrack[datum] + splitTrack[tijd];
+                DateTime datumtijd = DateTime.Parse(datetime);
+                int rdx = int.Parse(splitTrack[x]);
+                int rdy = int.Parse(splitTrack[y]);
+                float rddx = (float)rdx;
+                float rddy = (float)rdy;
+                utrecht.nepLooppad.Add(new KaartView.Opslaan(rddx, rddy, datumtijd));
+            }
 
             LinearLayout verticaal = new LinearLayout(this);
             verticaal.Orientation = Orientation.Vertical;
