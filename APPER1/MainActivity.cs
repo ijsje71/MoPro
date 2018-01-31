@@ -167,14 +167,10 @@ namespace APPER1
         public void Analyseren(object o, EventArgs ea)
         {
             string bericht;
-            if (utrecht.trainingGestart)
-            {
+            
                 bericht = utrecht.Bericht(utrecht.looppad);
-            }
-            else
-            {
-                bericht = utrecht.Bericht(utrecht.nepLooppad);
-            }
+            
+           
             Intent i = new Intent(this, typeof(AnalyseerActivity));
             i.SetType("text/plain");
             i.PutExtra("track", bericht);
@@ -184,8 +180,7 @@ namespace APPER1
 
         public void Delen(object o, EventArgs ea)
         {
-            // If-statement die checkt of de training al is gestart voordat de track gedeeld
-            //if (utrecht.looppad.Count == 0)
+          
             if (utrecht.stringLooppad == null)
             {
                 AlertDialog.Builder deelPopup = new AlertDialog.Builder(this);
@@ -210,11 +205,7 @@ namespace APPER1
 
         public void Opslag(object o, EventArgs ea)
         {
-            //StartActivity(typeof(OpslagActivity));
-
-           // Intent i = new Intent(this, typeof(OpslagActivity));
-            // i.PutExtra("startwaarde", stand);
-           // this.StartActivity(i);            string bericht = utrecht.Bericht(utrecht.looppad);
+                       string bericht = utrecht.Bericht(utrecht.looppad);
             Intent i = new Intent(this, typeof(OpslagActivity));
             i.SetType("text/plain");
             i.PutExtra("track2", bericht);

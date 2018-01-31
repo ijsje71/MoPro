@@ -108,15 +108,13 @@ namespace APPER1
                 int rdy = int.Parse(berichtSplit[y]);
                 float rddx = (float)rdx;
                 float rddy = (float)rdy;
-                utrecht.nepLooppad.Add(new KaartView.Opslaan(rddx, rddy, datumtijd));
+              
                
             }
             utrecht.Invalidate();
         } 
 
-        // Dit is de klasse KleurenApp3
-        // Tot hier was het hetzelfde als KleurenApp2. Maar de rest is anders:
-
+       
         SQLiteConnection database;
 
         protected void BeginKleuren()
