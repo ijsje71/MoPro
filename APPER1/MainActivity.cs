@@ -17,6 +17,10 @@ namespace APPER1
         TextView coordinaten;
         KaartView utrecht;
         Button startstop;
+        OpslagActivity opslag;
+        Toevoegen toevoeg;
+        string bericht;
+
 
         protected override void OnResume()
         {
@@ -32,6 +36,8 @@ namespace APPER1
         protected override void OnCreate(Bundle b)
         {
             base.OnCreate(b);
+            opslag = new OpslagActivity();
+            toevoeg = new Toevoegen();
 
             //verwijzing naar klasse KaartView
             utrecht = new KaartView(this);
@@ -74,23 +80,18 @@ namespace APPER1
             delen.Text = "Delen";
             delen.SetTextColor(Color.White);
 
-            // Declaraties voor de 'opslag' knop
-            Button opslaan = new Button(this);
-            opslaan.Text = "Save";
-            opslaan.SetTextColor(Color.White);
-
-
-            // Declaraties voor de 'opslag' knop
-            /*Button laden = new Button(this);
-            laden.Text = "Load";
-            laden.SetTextColor(Color.White);
-            laden.Click += this.Opslag;*/
-
-            // Declaraties voor de analyseer knop
+           // Declaraties voor de analyseer knop
             Button analyseren = new Button(this);
             analyseren.Text = "Analyseren";
             analyseren.SetTextColor(Color.White);
             analyseren.Click += Analyseren;
+
+            // Declaraties voor de 'opslag' knop
+            Button laden = new Button(this);
+            laden.Text = "Load/Save";
+            laden.SetTextColor(Color.White);
+            laden.Click += this.Opslag;
+
 
             // Event handler voor de share knop
             delen.Click += Delen;
@@ -105,9 +106,9 @@ namespace APPER1
 
             LinearLayout horizontaal2 = new LinearLayout(this);
             horizontaal2.Orientation = Orientation.Horizontal;
-            horizontaal2.AddView(opslaan);
+           
+            horizontaal2.AddView(laden);
             horizontaal2.AddView(analyseren);
-            //horizontaal2.AddView(laden);
 
             // Opmaak van het scherm
             LinearLayout verticaal = new LinearLayout(this);
@@ -163,34 +164,6 @@ namespace APPER1
             }
         }
 
-        public void Delen(object o, EventArgs ea)
-        {
-            // If-statement die checkt of de training al is gestart voordat de track gedeeld
-            if (utrecht.looppad.Count == 0)
-            {
-                AlertDialog.Builder deelPopup = new AlertDialog.Builder(this);
-                deelPopup.SetTitle("Training nog niet gestart");
-                deelPopup.SetMessage("Er is een fout opgetreden. De training kan niet worden gedeeld, als de training nog niet is gestart!");
-                // Verwijzing naar de Cancel methode
-                deelPopup.SetPositiveButton("OK", this.Cancel);
-                deelPopup.Create().Show();
-            }
-            else
-            {
-
-                string bericht = utrecht.Bericht(utrecht.looppad);
-                Intent i = new Intent(Intent.ActionSend);
-                i.SetType("text/plain");
-                i.PutExtra(Intent.ExtraText, bericht);
-                this.StartActivity(i);
-            }
-        }
-
-        /*        public void Opslag(object o, EventArgs ea)
-                {
-                    StartActivity(typeof(OpslagActivity));
-                } */
-
         public void Analyseren(object o, EventArgs ea)
         {
             string bericht;
@@ -209,7 +182,50 @@ namespace APPER1
 
         }
 
-        public void Cancel(object o, EventArgs ea)  // Eventhandler voor de nee/OK knop in de dialoog.
+        public void Delen(object o, EventArgs ea)
+        {
+            // If-statement die checkt of de training al is gestart voordat de track gedeeld
+            //if (utrecht.looppad.Count == 0)
+            if (utrecht.stringLooppad == null)
+            {
+                AlertDialog.Builder deelPopup = new AlertDialog.Builder(this);
+                deelPopup.SetTitle("Training nog niet gestart");
+                deelPopup.SetMessage("Er is een fout opgetreden. De training kan niet worden gedeeld, als de training nog niet is gestart!");
+                // Verwijzing naar de Cancel methode
+                deelPopup.SetPositiveButton("OK", this.Cancel);
+                deelPopup.Create().Show();
+            }
+            else
+            { 
+
+                bericht = utrecht.Bericht(utrecht.looppad);
+               // string bericht = utrecht.stringLooppad;
+                Intent i = new Intent(Intent.ActionSend);
+                i.SetType("text/plain");
+                i.PutExtra(Intent.ExtraText, bericht);
+                this.StartActivity(i);
+                //toevoeg.naamVeld.Text = bericht;
+            }
+        }
+
+        public void Opslag(object o, EventArgs ea)
+        {
+            //StartActivity(typeof(OpslagActivity));
+
+           // Intent i = new Intent(this, typeof(OpslagActivity));
+            // i.PutExtra("startwaarde", stand);
+           // this.StartActivity(i);            string bericht = utrecht.Bericht(utrecht.looppad);
+            Intent i = new Intent(this, typeof(OpslagActivity));
+            i.SetType("text/plain");
+            i.PutExtra("track2", bericht);
+            Console.WriteLine("HEYHALLO DIT IS DE MAINACTIVITY OVER" + bericht);
+            this.StartActivity(i);
+            this.StartActivityForResult(i, 1000000);
+        }
+
+       
+
+            public void Cancel(object o, EventArgs ea)  // Eventhandler voor de nee/OK knop in de dialoog.
         {
             // Aanpassen van de Start/Stop knop met verschillende situaties
             if (utrecht.looppad.Count != 0)

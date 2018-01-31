@@ -15,19 +15,25 @@ namespace APPER1
     [Activity(Label = "AnalyseerActivity")]
     public class AnalyseerActivity : Activity
     {
-        KaartView utrecht;
+        
 
         protected override void OnCreate(Bundle b)
         {
             base.OnCreate(b);
 
-            // Create your application here
+            TextView GemSnelheidTitel = new TextView(this);
+            GemSnelheidTitel.Text = "Gemiddelde snelheid:";
             TextView gemSnelheid = new TextView(this);
-            
+            TextView maxSnelheidTitel = new TextView(this);
+            maxSnelheidTitel.Text = "Maximale snelheid gelopen";
             TextView maxSnelheid = new TextView(this);
+            TextView tijdsduurTitel = new TextView(this);
+            tijdsduurTitel.Text = "Totale tijdsduur:";
             TextView tijdsduur = new TextView(this);
+            TextView gelopenAfstandTitel = new TextView(this);
+            gelopenAfstandTitel.Text = "Gelopen afstand:";
             TextView gelopenAfstand = new TextView(this);
-            utrecht = new KaartView(this);
+
 
             string track = this.Intent.GetStringExtra("track");
             string [] splitTrack = track.Split();
@@ -43,26 +49,15 @@ namespace APPER1
 
 
 
-            //tijdsduur.Text = tijdsduurSom.ToString();
+            tijdsduur.Text = tijdsduurSom.ToString();
+           // tijdsduur.Text = track;
 
-
-            int tijd = -1;
-            int datum = -2;
-            int y = -3;
-            int x = -4;
-            for (int i = 0; i < (splitTrack.Length / 4); i++) {
-                datum = datum + 4;
-                tijd = tijd + 4;
-                y = y + 4;
-                x = x + 4;
-                string datetime = splitTrack[datum] + splitTrack[tijd];
-                DateTime datumtijd = DateTime.Parse(datetime);
-                int rdx = int.Parse(splitTrack[x]);
-                int rdy = int.Parse(splitTrack[y]);
-                float rddx = (float)rdx;
-                float rddy = (float)rdy;
-                utrecht.nepLooppad.Add(new KaartView.Opslaan(rddx, rddy, datumtijd));
-            }
+            //int j = -1;
+            //for (int i = 0; i < (splitTrack.Length / 4); i++) {
+            //    j = j + 4;
+            //    tijdsduur.Text += $"{splitTrack[j]} \n";
+            //    
+            //}
 
             LinearLayout verticaal = new LinearLayout(this);
             verticaal.Orientation = Orientation.Vertical;
